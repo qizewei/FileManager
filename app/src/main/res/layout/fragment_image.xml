@@ -1,0 +1,52 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backGround"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.filemanager.fragment.ImageFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="@color/colorPrimary"
+        android:fitsSystemWindows="true"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="17dp"
+            android:text="图片"
+            android:translationZ="4dp"
+            android:textColor="#fff"
+            android:textSize="21sp"/>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/loading_gif"
+            android:layout_width="354dp"
+            android:layout_height="258dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/image_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/id_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerHeight="10dp"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+      
+    </FrameLayout>
+</LinearLayout>
