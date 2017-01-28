@@ -10,17 +10,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.utils.FileUtils;
 import com.bumptech.glide.Glide;
 import com.filemanager.R;
 import com.filemanager.adapter.ImageAdapter;
+import com.filemanager.util.ACache;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -38,6 +39,8 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private SwipeRefreshLayout mRefreshLayout;
     private Gson mGson;
     private ImageView mLoading;
+    private TextView mLoadingText;
+    private ACache mCatch;
 
     public ImageFragment() {
         // Required empty public constructor
@@ -49,10 +52,13 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         // Inflate the layout for this fragment
         View ret = inflater.inflate(R.layout.fragment_image, container, false);
         mLoading = (ImageView) ret.findViewById(R.id.loading_gif);
-        Glide.with(getContext()).load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1485447799071&di=638073d1829f47853c59e81b6d0bb1bd&imgtype=0&src=http%3A%2F%2Fwww.shejicool.com%2Fuploads%2Fallimg%2F201409%2F1PAV042-10.gif")
+        mLoadingText = (TextView) ret.findViewById(R.id.loading_text);
+        Glide.with(getContext()).load(R.drawable.loading)
                 .asGif().into(mLoading);
         mFiles = new ArrayList<>();
         mGson = new Gson();
+        mCatch = ACache.get(getContext());
+
 
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
@@ -71,14 +77,15 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         new Thread(new Runnable() {
             @Override
             public void run() {
-                
+
                 judge();
-                
+
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         mRecyclerView.setAdapter(mAdapter = new ImageAdapter(getContext(), mFiles));
                         mLoading.setVisibility(View.INVISIBLE);
+                        mLoadingText.setVisibility(View.INVISIBLE);
                         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                         mAdapter.setOnItemClickLitener(new ImageAdapter.OnItemClickLitener() {
                             @Override
@@ -100,18 +107,18 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
      */
     private void judge() {
         SharedPreferences table = getContext().getSharedPreferences("table", Context.MODE_PRIVATE);
-        boolean first = table.getBoolean("first", false);
-        int num = table.getInt("num", 0);
-        if (first) {
+
+        boolean first = table.getBoolean("firstImage", true);
+        int num = table.getInt("numImage", 0);
+        if (!first) {
             for (int i = 0; i < num; i++) {
                 String s = String.valueOf(i);
-                String string = table.getString(s, null);
-                if (string!=null) {
+                String string = mCatch.getAsString(s);
+                if (string != null) {
                     File file = mGson.fromJson(string, File.class);
                     mFiles.add(file);
                 }
-                else
-                    Log.d("nullllll", "judge: ");
+
             }
         } else {
             mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".jpg");
@@ -123,7 +130,7 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
      * 添加缓存
      */
     public void addCatch() {
-  
+
         ArrayList<String> strings = new ArrayList<>();
         SharedPreferences first = getActivity().getSharedPreferences("table", Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = first.edit();
@@ -132,12 +139,11 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             String s = mGson.toJson(mFiles.get(i));
             strings.add(s);
         }
-
-        edit.putBoolean("first", true);
-        edit.putInt("num", strings.size());
+        edit.putBoolean("firstImage", false);
+        edit.putInt("numImage", strings.size());
         for (int i = 0; i < strings.size(); i++) {
             String s = String.valueOf(i);
-            edit.putString(s, strings.get(i));
+            mCatch.put(s, strings.get(i), ACache.TIME_DAY);
         }
         edit.commit();
     }
@@ -156,7 +162,7 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        
+
                         mAdapter.notifyDataSetChanged();
                         mRefreshLayout.setRefreshing(false);
                         Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();

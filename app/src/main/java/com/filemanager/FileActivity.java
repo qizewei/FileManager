@@ -1,6 +1,7 @@
 package com.filemanager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +21,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.filemanager.util.ACache;
 
 import java.text.DecimalFormat;
 
@@ -51,10 +54,10 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.file_menu3);
         }
-        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.file_refresh);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.file_refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        
+
         mFileImage = (LinearLayout) findViewById(R.id.file_image);
         mFileMusic = (LinearLayout) findViewById(R.id.file_music);
         mFileVideo = (LinearLayout) findViewById(R.id.file_video);
@@ -116,7 +119,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu,menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
     }
 
@@ -124,7 +127,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toolbar_find:
-                startActivity(new Intent(FileActivity.this,FindFileActivity.class));
+                startActivity(new Intent(FileActivity.this, FindFileActivity.class));
                 break;
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
@@ -155,6 +158,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 双击返回键退出
+     *
      * @param keyCode
      * @param event
      * @return
@@ -182,8 +186,17 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.nav_clear:
+                ACache mCatch = ACache.get(FileActivity.this);
+                mCatch.clear();
+                SharedPreferences table = getSharedPreferences("table", MODE_PRIVATE);
+                SharedPreferences.Editor edit = table.edit();
+                edit.putBoolean("firstImage",true);
+                edit.commit();
+                Toast.makeText(this, "清理缓存成功", Toast.LENGTH_SHORT).show();
+                break;
             case R.id.nav_check:
-                Toast.makeText(this, "已经是最新版本。", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "已经是最新版本", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_about:
                 startActivity(new Intent(FileActivity.this, AboutActivity.class));

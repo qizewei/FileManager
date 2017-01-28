@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backGround"
+    android:background="#fff"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="com.filemanager.fragment.ImageFragment"
@@ -26,15 +26,24 @@
             android:textColor="#fff"
             android:textSize="21sp"/>
     </LinearLayout>
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
             android:id="@+id/loading_gif"
-            android:layout_width="354dp"
-            android:layout_height="258dp"
-            android:layout_gravity="center"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
             android:scaleType="fitXY"
+            />
+        <TextView
+            android:id="@+id/loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="正在扫描磁盘，请稍后..."
+            android:layout_below="@id/loading_gif"
+            android:textSize="12sp"
+            android:layout_centerHorizontal="true"
             />
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -49,5 +58,5 @@
             android:dividerHeight="10dp"/>
     </android.support.v4.widget.SwipeRefreshLayout>
       
-    </FrameLayout>
+    </RelativeLayout>
 </LinearLayout>
