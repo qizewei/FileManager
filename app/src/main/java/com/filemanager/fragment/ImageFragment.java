@@ -114,13 +114,14 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             for (int i = 0; i < num; i++) {
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s);
-                if (string != null) {
+                if (!string .equals("null")) {
                     File file = mGson.fromJson(string, File.class);
                     mFiles.add(file);
                 }
 
             }
         } else {
+            
             mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".jpg");
             addCatch();
         }
