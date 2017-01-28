@@ -9,5 +9,7 @@
                 <item name="android:windowBackground">@mipmap/openpager</item>
                 <item name="windowNoTitle">true</item>
                 <item name="android:windowTranslucentStatus">true</item>
+                <item name="android:windowAnimationStyle">@style/activityAnim</item>
+
         </style>
 </resources>

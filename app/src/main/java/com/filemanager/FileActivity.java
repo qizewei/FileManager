@@ -1,6 +1,7 @@
 package com.filemanager;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
@@ -108,7 +109,9 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setClass(this, MemoryActivity.class);
                 break;
         }
-        startActivity(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            startActivity(intent);
+        }
     }
 
     @Override
