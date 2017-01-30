@@ -1,18 +1,68 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="#b1a9a9"
-             tools:context="com.filemanager.fragment.MusicFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#fff"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical"
+              tools:context="com.filemanager.fragment.MusicFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/id_recyclerview"
-        android:dividerHeight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-       
+        android:layout_height="49dp"
+        android:background="@color/colorPrimary"
+        android:fitsSystemWindows="true"
+        android:translationZ="4dp"
+        >
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="17dp"
+            android:text="音乐"
+            android:textColor="#fff"
+            android:textSize="21sp"
+            android:translationZ="4dp"/>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp">
+
+        <ImageView
+            android:id="@+id/loading_gif"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY"
+            />
+
+        <TextView
+            android:id="@+id/loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loading_gif"
+            android:layout_centerHorizontal="true"
+            android:text="正在扫描磁盘，请稍后..."
+            android:textSize="12sp"
+            />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/music_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/id_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dividerHeight="10dp"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

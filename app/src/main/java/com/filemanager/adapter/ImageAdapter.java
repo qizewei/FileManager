@@ -3,7 +3,6 @@ package com.filemanager.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -67,6 +66,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
                 .placeholder(R.mipmap.file_image)
                 .error(R.mipmap.error)
                 .into(holder.tv);
+        
 
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {
@@ -75,12 +75,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
                 public void onClick(View v) {
                     int pos = holder.getLayoutPosition();
                     mOnItemClickLitener.onItemClick(holder.tv, pos);
+                    
                     String path = mDatas.get(pos).getPath();
                     Intent intent = FileUtil.openFile(path);
-                    
-
                     mContext.startActivity(intent);
-
                 }
             });
 
@@ -157,11 +155,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
         }
 
 
-    }
-
-    private List<File> upDate() {
-        List<File> files = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".jpg");
-        return files;
     }
 
     @Override

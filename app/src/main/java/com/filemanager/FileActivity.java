@@ -192,6 +192,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 SharedPreferences table = getSharedPreferences("table", MODE_PRIVATE);
                 SharedPreferences.Editor edit = table.edit();
                 edit.putBoolean("firstImage",true);
+                edit.putBoolean("firstMusic",true);
                 edit.commit();
                 Toast.makeText(this, "清理缓存成功", Toast.LENGTH_SHORT).show();
                 break;
