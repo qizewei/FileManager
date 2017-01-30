@@ -98,7 +98,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
                                         //更新缓存
                                         String s = String.valueOf(position);
                                         String name = "{\"path\":\""+file.getAbsolutePath()+"\"}" ;
-                                        mCache.put(s, name);
+                                        mCache.put(s + "music", name);
 
                                     }
                                 }
@@ -139,6 +139,8 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
                     }
                 }
             });
+            
+            
         }
     }
 

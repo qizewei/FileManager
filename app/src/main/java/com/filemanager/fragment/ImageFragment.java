@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -44,7 +42,6 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private TextView mLoadingText;
     private ACache mCatch;
     private SharedPreferences mPreferences;
-    
 
 
     public ImageFragment() {
@@ -70,18 +67,17 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         mRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mRefreshLayout.setOnRefreshListener(this);
-     
+
         initData();
 
         return ret;
     }
 
-   
 
     private void initData() {
 
         //开线程初始化数据
-        Thread mThread = new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -107,8 +103,8 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                     }
                 });
             }
-        });
-        mThread.start();
+        }).start();
+    
     }
 
     /**
@@ -166,7 +162,6 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mFiles.clear();
                 mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".jpg");
                 addCatch();
                 getActivity().runOnUiThread(new Runnable() {

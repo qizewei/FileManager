@@ -6,25 +6,40 @@
     android:layout_marginTop="7dp"
     >
 
-    <LinearLayout
+    <com.mcxtzhang.swipemenulib.SwipeMenuLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
-        android:orientation="horizontal"
-        android:padding="7dp"
+        android:clickable="true"
         >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/file_zip"/>
-
-        <TextView
-            android:id="@+id/item_zip_name"
+        <LinearLayout
+            android:id="@+id/zip_linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="fileame"/>
+            android:background="#fff"
+            android:orientation="horizontal"
+            android:padding="7dp"
+            >
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/file_zip"/>
+
+            <TextView
+                android:id="@+id/item_zip_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="fileame"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/file_zip_delete"
+            style="@style/file_item_select"
+            android:background="#ff0000"
+            android:text="删除"
+            android:textSize="21sp"/>
+    </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
 </android.support.v7.widget.CardView>

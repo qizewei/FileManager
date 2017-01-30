@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
     android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+ android:layout_margin="5dp"
     android:translationZ="5dp"
-    android:layout_marginBottom="5dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
     >
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="130dp"
-            android:layout_height="100dp"
-            android:src="@mipmap/file_apk"/>
+    <com.mcxtzhang.swipemenulib.SwipeMenuLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        >
+
+        <LinearLayout
+            android:id="@+id/apk_linear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/file_apk"/>
+
+            <TextView
+                android:id="@+id/item_apk_filename"
+                android:layout_width="match_parent"
+                android:layout_height="21dp"
+                android:layout_gravity="bottom"
+                android:gravity="center_horizontal"
+                android:maxLines="1"
+                android:text="文件名"
+                />
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/item_apk_filename"
-            android:layout_width="match_parent"
-            android:layout_height="21dp"
-            android:layout_gravity="bottom"
-            android:gravity="center_horizontal"
-            android:maxLines="1"
-            android:text="文件名"
-            />
-
-    </LinearLayout>
+            android:id="@+id/item_apk_delete"
+            style="@style/file_item_select"
+            android:background="#ff0000"
+            android:text="删除"/>
+    </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
 </android.support.v7.widget.CardView>

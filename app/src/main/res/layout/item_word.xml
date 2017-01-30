@@ -5,8 +5,14 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="7dp"
     >
+    <com.mcxtzhang.swipemenulib.SwipeMenuLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        >
 
     <LinearLayout
+        android:id="@+id/word_linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
@@ -27,4 +33,11 @@
             android:text="fileame"/>
 
     </LinearLayout>
+        <TextView
+            android:id="@+id/file_word_delete"
+            style="@style/file_item_select"
+            android:background="#ff0000"
+            android:textSize="21sp"
+            android:text="删除"/>
+    </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
 </android.support.v7.widget.CardView>

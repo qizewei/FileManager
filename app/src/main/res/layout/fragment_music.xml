@@ -2,7 +2,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#fff"
+              android:background="@color/backGround"
               android:fitsSystemWindows="true"
               android:orientation="vertical"
               tools:context="com.filemanager.fragment.MusicFragment">

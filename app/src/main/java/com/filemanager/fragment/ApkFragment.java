@@ -1,28 +1,47 @@
 package com.filemanager.fragment;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.blankj.utilcode.utils.FileUtils;
+import com.bumptech.glide.Glide;
 import com.filemanager.R;
 import com.filemanager.adapter.ApkAdapter;
-import com.filemanager.util.FileUtil;
+import com.filemanager.util.ACache;
+import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ApkFragment extends Fragment {
+public class ApkFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView mRecyclerView;
     private List<File> mFiles;
     private ApkAdapter mAdapter;
+    private SwipeRefreshLayout mRefreshLayout;
+    private Gson mGson;
+    private ImageView mLoading;
+    private TextView mLoadingText;
+    private ACache mCatch;
+    private SharedPreferences mPreferences;
+
 
     public ApkFragment() {
         // Required empty public constructor
@@ -34,11 +53,115 @@ public class ApkFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View ret = inflater.inflate(R.layout.fragment_apk, container, false);
-        mFiles = FileUtil.getSpecificTypeOfFile(getContext(),new String[]{".apk",".APK"});
+        mLoading = (ImageView) ret.findViewById(R.id.loading_gif);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
+        mLoadingText = (TextView) ret.findViewById(R.id.loading_text);
+        mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
+        mRefreshLayout = (SwipeRefreshLayout) ret.findViewById(R.id.apk_refresh);
+        Glide.with(getContext()).load(R.drawable.loading)
+                .asGif().into(mLoading);
+        mFiles = new ArrayList<>();
+        mGson = new Gson();
+        mCatch = ACache.get(getContext());
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        mRecyclerView.setAdapter(mAdapter = new ApkAdapter(getContext(),mFiles));
+
+        mRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mRefreshLayout.setOnRefreshListener(this);
+        initDate();
         return ret;
     }
 
+    private void initDate() {
+        //开线程初始化数据
+        Thread mThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                judge();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        mRecyclerView.setAdapter(mAdapter = new ApkAdapter(getContext(), mFiles));
+                        mLoading.setVisibility(View.INVISIBLE);
+                        mLoadingText.setVisibility(View.INVISIBLE);
+                        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                        mAdapter.setOnItemClickLitener(new ApkAdapter.OnItemClickLitener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                            }
+
+                            @Override
+                            public void onItemLongClick(View view, int position) {
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        mThread.start();
+    }
+
+    private void judge() {
+        mPreferences = getContext().getSharedPreferences("table", Context.MODE_PRIVATE);
+
+        boolean first = mPreferences.getBoolean("firstApk", true);
+        int num = mPreferences.getInt("numApk", 0);
+        if (!first) {
+            for (int i = 0; i < num; i++) {
+                String s = String.valueOf(i);
+                String string = mCatch.getAsString(s + "apk");
+                if (!string.equals("null")) {
+                    File file = mGson.fromJson(string, File.class);
+                    mFiles.add(file);
+                }
+
+            }
+        } else {
+
+            mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".apk");
+            addCatch();
+        }
+    }
+
+    private void addCatch() {
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i = 0; i < mFiles.size(); i++) {
+            String s = mGson.toJson(mFiles.get(i));
+            strings.add(s);
+        }
+        for (int i = 0; i < strings.size(); i++) {
+            String s = String.valueOf(i);
+            mCatch.put(s + "apk", strings.get(i), ACache.TIME_DAY);
+        }
+
+
+        SharedPreferences.Editor edit = mPreferences.edit();
+        edit.putBoolean("firstApk", false);
+        edit.putInt("numApk", strings.size());
+        edit.commit();
+    }
+
+    @Override
+    public void onRefresh() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".apk");
+                addCatch();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        mAdapter.notifyDataSetChanged();
+                        mRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).start();
+
+
+    }
 }

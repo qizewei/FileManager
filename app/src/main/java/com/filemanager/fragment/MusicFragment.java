@@ -69,23 +69,6 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         mRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mRefreshLayout.setOnRefreshListener(this);
         initDate();
-//        mFiles = FileUtil.getSpecificTypeOfFile(getContext(),new String[]{".mp3"});
-//        mRecyclerView.setAdapter(mAdapter = new MusicAdapter(getContext(),mFiles));
-//        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-//        mAdapter.setOnItemClickLitener(new MusicAdapter.OnItemClickLitener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                String path = mFiles.get(position).getPath();
-//                Intent intent = FileUtil.openFile(path);
-//                startActivity(intent);
-//
-//            }
-//
-//            @Override
-//            public void onItemLongClick(View view, int position) {
-//
-//            }
-//        });
         return ret;
     }
 
@@ -166,8 +149,7 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mFiles.clear();
-                mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".jpg");
+                mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".mp3");
                 addCatch();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override

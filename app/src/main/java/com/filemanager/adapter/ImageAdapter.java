@@ -179,8 +179,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 
         void onItemLongClick(View view, int position);
     }
-
-
+    
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView tv;

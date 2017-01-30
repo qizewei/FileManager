@@ -66,6 +66,7 @@ public class FileUtil {
 
     public static Intent openFile(String filePath){
         
+        
         File file = new File(filePath);
         if(!file.exists()) return null;  
             /* 取得扩展名 */
