@@ -28,7 +28,6 @@ import java.text.DecimalFormat;
 
 public class FileActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private LinearLayout mFileImage, mFileMusic, mFileVideo, mFileWord, mFileApk, mFileZip, mFileBottom;
     private DrawerLayout mDrawerLayout;
     private TextView mFreeView;
     private TextView mTotalView;
@@ -58,20 +57,20 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        mFileImage = (LinearLayout) findViewById(R.id.file_image);
-        mFileMusic = (LinearLayout) findViewById(R.id.file_music);
-        mFileVideo = (LinearLayout) findViewById(R.id.file_video);
-        mFileWord = (LinearLayout) findViewById(R.id.file_word);
-        mFileApk = (LinearLayout) findViewById(R.id.file_apk);
-        mFileZip = (LinearLayout) findViewById(R.id.file_zip);
-        mFileBottom = (LinearLayout) findViewById(R.id.file_bottom);
-        mFileImage.setOnClickListener(this);
-        mFileMusic.setOnClickListener(this);
-        mFileVideo.setOnClickListener(this);
-        mFileWord.setOnClickListener(this);
-        mFileApk.setOnClickListener(this);
-        mFileZip.setOnClickListener(this);
-        mFileBottom.setOnClickListener(this);
+        LinearLayout fileImage = (LinearLayout) findViewById(R.id.file_image);
+        LinearLayout fileMusic = (LinearLayout) findViewById(R.id.file_music);
+        LinearLayout fileVideo = (LinearLayout) findViewById(R.id.file_video);
+        LinearLayout fileWord = (LinearLayout) findViewById(R.id.file_word);
+        LinearLayout fileApk = (LinearLayout) findViewById(R.id.file_apk);
+        LinearLayout fileZip = (LinearLayout) findViewById(R.id.file_zip);
+        LinearLayout fileBottom = (LinearLayout) findViewById(R.id.file_bottom);
+        fileImage.setOnClickListener(this);
+        fileMusic.setOnClickListener(this);
+        fileVideo.setOnClickListener(this);
+        fileWord.setOnClickListener(this);
+        fileApk.setOnClickListener(this);
+        fileZip.setOnClickListener(this);
+        fileBottom.setOnClickListener(this);
 
         //底边栏存储空间显示
         mFreeView = (TextView) findViewById(R.id.free_number);
@@ -191,12 +190,12 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 mCatch.clear();
                 SharedPreferences table = getSharedPreferences("table", MODE_PRIVATE);
                 SharedPreferences.Editor edit = table.edit();
-                edit.putBoolean("firstImage",true);
-                edit.putBoolean("firstMusic",true);
-                edit.putBoolean("firstVideo",true);
-                edit.putBoolean("firstWord",true);
-                edit.putBoolean("firstApk",true);
-                edit.putBoolean("firstApk",true);
+                edit.putBoolean("firstImage", true);
+                edit.putBoolean("firstMusic", true);
+                edit.putBoolean("firstVideo", true);
+                edit.putBoolean("firstWord", true);
+                edit.putBoolean("firstApk", true);
+                edit.putBoolean("firstZip", true);
                 edit.commit();
                 Toast.makeText(this, "清理缓存成功", Toast.LENGTH_SHORT).show();
                 break;

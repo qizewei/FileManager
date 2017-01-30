@@ -3,12 +3,17 @@ package com.filemanager.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +21,7 @@ import android.widget.Toast;
 import com.blankj.utilcode.utils.FileUtils;
 import com.filemanager.R;
 import com.filemanager.util.ACache;
+import com.filemanager.util.ApkDetial;
 import com.filemanager.util.FileUtil;
 
 import java.io.File;
@@ -51,7 +57,12 @@ public class ApkAdapter extends RecyclerView.Adapter<ApkAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(final ApkAdapter.MyViewHolder holder, final int position) {
-        holder.tv.setText(mDatas.get(position).getName());
+        String name = mDatas.get(position).getName();
+
+        ApkDetial detial = apkInfo(mDatas.get(position).getAbsolutePath(), mContext);
+        holder.tv.setText(detial.getName());
+        Drawable icon = detial.getIcon();
+        holder.icon.setImageDrawable(icon);
 
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {
@@ -155,6 +166,29 @@ public class ApkAdapter extends RecyclerView.Adapter<ApkAdapter.MyViewHolder> {
         return mDatas.size();
     }
 
+    /**
+     * 获取apk包的信息：版本号，名称，图标等
+     *
+     * @param absPath apk包的绝对路径
+     * @param context
+     */
+    public ApkDetial apkInfo(String absPath, Context context) {
+        PackageManager pm = context.getPackageManager();
+        PackageInfo pkgInfo = pm.getPackageArchiveInfo(absPath, PackageManager.GET_ACTIVITIES);
+        ApkDetial detial = new ApkDetial();
+        if (pkgInfo != null) {
+            ApplicationInfo appInfo = pkgInfo.applicationInfo;
+            /* 必须加这两句，不然下面icon获取是default icon而不是应用包的icon */
+            appInfo.sourceDir = absPath;
+            appInfo.publicSourceDir = absPath;
+            detial.setName(pm.getApplicationLabel(appInfo).toString());// 得到应用名 
+            detial.setVersion(pkgInfo.versionName); // 得到版本信息
+            detial.setIcon(pm.getApplicationIcon(appInfo));// 得到图标信息
+
+        }
+        return detial;
+    }
+
     public interface OnItemClickLitener {
         void onItemClick(View view, int position);
 
@@ -165,13 +199,14 @@ public class ApkAdapter extends RecyclerView.Adapter<ApkAdapter.MyViewHolder> {
         TextView tv;
         LinearLayout Linear;
         TextView item_apk_delete;
+        ImageView icon;
 
         public MyViewHolder(View view) {
             super(view);
             tv = (TextView) view.findViewById(R.id.item_apk_filename);
             Linear = (LinearLayout) view.findViewById(R.id.apk_linear);
             item_apk_delete = (TextView) view.findViewById(R.id.item_apk_delete);
-
+            icon = (ImageView) view.findViewById(R.id.apk_icon);
         }
     }
 }

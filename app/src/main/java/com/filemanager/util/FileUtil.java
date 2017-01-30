@@ -76,7 +76,7 @@ public class FileUtil {
                 end.equals("xmf")||end.equals("ogg")||end.equals("wav")){
             return getAudioFileIntent(filePath);
         }else if(end.equals("3gp")||end.equals("mp4")){
-            return getAudioFileIntent(filePath);
+            return getVideoFileIntent(filePath);
         }else if(end.equals("jpg")||end.equals("gif")||end.equals("png")||
                 end.equals("jpeg")||end.equals("bmp")){
             return getImageFileIntent(filePath);
