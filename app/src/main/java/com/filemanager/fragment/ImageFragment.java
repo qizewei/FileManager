@@ -102,17 +102,13 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         //开线程初始化数据
 
         new Thread(new Runnable() {
-            private volatile boolean thread_run = true;
 
             @Override
             public void run() {
-                while (thread_run) {
                     judge();
                     Message message = new Message();
                     message.what = 1;
                     myHandler.sendMessage(message);
-                    thread_run = false;
-                }
             }
         }).start();
     }
