@@ -8,6 +8,7 @@ import android.os.StatFs;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private long exitTime = 0;
     private GuillotineAnimation mAnimation;
+    public static boolean isNight = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,9 +160,19 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences table = getSharedPreferences("table", MODE_PRIVATE);
         switch (item.getItemId()) {
             case R.id.toolbar_find:
-                startActivity(new Intent(FileActivity.this, FindFileActivity.class));
+                isNight = table.getBoolean("night", false);
+                if (isNight) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    table.edit().putBoolean("night", false).commit();
+                    
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    table.edit().putBoolean("night", true).commit();
+                }
+                recreate();
                 break;
         }
         return true;
@@ -230,4 +242,5 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
             }
         }).start();
     }
+    
 }

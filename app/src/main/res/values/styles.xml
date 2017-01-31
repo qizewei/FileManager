@@ -11,6 +11,11 @@
         <item name="android:windowAnimationStyle">@style/activityAnim</item>
     </style>
 
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="activityAnim">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
@@ -31,6 +36,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/textColor</item>
     </style>
     
     <style name="file_bottom_text">
