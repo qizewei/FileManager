@@ -2,37 +2,35 @@ package com.filemanager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.filemanager.util.ACache;
+import com.yalantis.guillotine.animation.GuillotineAnimation;
 
 import java.text.DecimalFormat;
 
-public class FileActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
+public class FileActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private DrawerLayout mDrawerLayout;
     private TextView mFreeView;
     private TextView mTotalView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private long exitTime = 0;
+    private GuillotineAnimation mAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,31 +44,37 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.activity_file);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.file_menu3);
-        }
+        
+        ImageView menus = (ImageView)findViewById(R.id.content_hamburger); 
+        View guillotineMenu = LayoutInflater.from(this).inflate(R.layout.guillotine, null);
+        mDrawerLayout.addView(guillotineMenu);
+        mAnimation = new GuillotineAnimation.GuillotineBuilder(guillotineMenu, guillotineMenu.findViewById(R.id.guillotine_hamburger), menus)
+                .setStartDelay(250)
+                .setActionBarViewForAnimation(toolbar)
+                .setClosedOnStart(true)
+                .build();
+
+      
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.file_refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        LinearLayout fileImage = (LinearLayout) findViewById(R.id.file_image);
-        LinearLayout fileMusic = (LinearLayout) findViewById(R.id.file_music);
-        LinearLayout fileVideo = (LinearLayout) findViewById(R.id.file_video);
-        LinearLayout fileWord = (LinearLayout) findViewById(R.id.file_word);
-        LinearLayout fileApk = (LinearLayout) findViewById(R.id.file_apk);
-        LinearLayout fileZip = (LinearLayout) findViewById(R.id.file_zip);
-        LinearLayout fileBottom = (LinearLayout) findViewById(R.id.file_bottom);
-        fileImage.setOnClickListener(this);
-        fileMusic.setOnClickListener(this);
-        fileVideo.setOnClickListener(this);
-        fileWord.setOnClickListener(this);
-        fileApk.setOnClickListener(this);
-        fileZip.setOnClickListener(this);
-        fileBottom.setOnClickListener(this);
+        findViewById(R.id.file_image).setOnClickListener(this);
+        findViewById(R.id.file_music).setOnClickListener(this);
+        findViewById(R.id.file_video).setOnClickListener(this);
+        findViewById(R.id.file_word).setOnClickListener(this);
+        findViewById(R.id.file_apk).setOnClickListener(this);
+        findViewById(R.id.file_zip).setOnClickListener(this);
+        findViewById(R.id.file_bottom).setOnClickListener(this);
+        
+        findViewById(R.id.menu_clear).setOnClickListener(this);
+        findViewById(R.id.menu_check).setOnClickListener(this);
+        findViewById(R.id.menu_about).setOnClickListener(this);
+        findViewById(R.id.menu_quit).setOnClickListener(this);
+        findViewById(R.id.menu_title).setOnClickListener(this);
+        
+        
+    
 
         //底边栏存储空间显示
         mFreeView = (TextView) findViewById(R.id.free_number);
@@ -86,33 +90,63 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.file_image:
                 intent.setClass(this, ShowActivity.class);
                 intent.putExtra("class", "image");
+                startActivity(intent);
                 break;
             case R.id.file_music:
                 intent.setClass(this, ShowActivity.class);
                 intent.putExtra("class", "music");
+                startActivity(intent);
                 break;
             case R.id.file_video:
                 intent.setClass(this, ShowActivity.class);
                 intent.putExtra("class", "video");
+                startActivity(intent);
                 break;
             case R.id.file_word:
                 intent.setClass(this, ShowActivity.class);
                 intent.putExtra("class", "word");
+                startActivity(intent);
                 break;
             case R.id.file_apk:
                 intent.setClass(this, ShowActivity.class);
                 intent.putExtra("class", "apk");
+                startActivity(intent);
                 break;
             case R.id.file_zip:
                 intent.setClass(this, ShowActivity.class);
                 intent.putExtra("class", "zip");
+                startActivity(intent);
                 break;
             case R.id.file_bottom:
                 intent.setClass(this, MemoryActivity.class);
+                startActivity(intent);
                 break;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            startActivity(intent);
+            case R.id.menu_clear:
+                ACache mCatch = ACache.get(FileActivity.this);
+                mCatch.clear();
+                SharedPreferences table = getSharedPreferences("table", MODE_PRIVATE);
+                SharedPreferences.Editor edit = table.edit();
+                edit.putBoolean("firstImage", true);
+                edit.putBoolean("firstMusic", true);
+                edit.putBoolean("firstVideo", true);
+                edit.putBoolean("firstWord", true);
+                edit.putBoolean("firstApk", true);
+                edit.putBoolean("firstZip", true);
+                edit.commit();
+                Toast.makeText(this, "清理缓存成功", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_check:
+                Toast.makeText(this, "已经是最新版本", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_about:
+                startActivity(new Intent(FileActivity.this, AboutActivity.class));
+                break;
+            case R.id.menu_quit:
+                finish();
+                break;
+            case R.id.menu_title:
+                Toast.makeText(this, "别瞎点，我只是一排文字。", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
@@ -127,9 +161,6 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case R.id.toolbar_find:
                 startActivity(new Intent(FileActivity.this, FindFileActivity.class));
-                break;
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
         }
         return true;
@@ -176,42 +207,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         return super.onKeyDown(keyCode, event);
     }
 
-    /**
-     * 侧滑菜单单击监听
-     *
-     * @param item
-     * @return
-     */
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_clear:
-                ACache mCatch = ACache.get(FileActivity.this);
-                mCatch.clear();
-                SharedPreferences table = getSharedPreferences("table", MODE_PRIVATE);
-                SharedPreferences.Editor edit = table.edit();
-                edit.putBoolean("firstImage", true);
-                edit.putBoolean("firstMusic", true);
-                edit.putBoolean("firstVideo", true);
-                edit.putBoolean("firstWord", true);
-                edit.putBoolean("firstApk", true);
-                edit.putBoolean("firstZip", true);
-                edit.commit();
-                Toast.makeText(this, "清理缓存成功", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_check:
-                Toast.makeText(this, "已经是最新版本", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_about:
-                startActivity(new Intent(FileActivity.this, AboutActivity.class));
-                break;
-            case R.id.nav_quit:
-                finish();
-                break;
-        }
-        return false;
-    }
-
+ 
     @Override
     public void onRefresh() {
         new Thread(new Runnable() {
