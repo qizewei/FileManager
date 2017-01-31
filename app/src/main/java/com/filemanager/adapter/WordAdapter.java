@@ -34,7 +34,11 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.MyViewHolder> 
     public WordAdapter(Context context, List<File> Data) {
         this.mDatas = Data;
         this.mContext = context;
-        mCache = ACache.get(mContext);
+        try {
+            mCache = ACache.get(mContext);
+        }catch (Exception e){
+            //子线程未销毁可能时执行
+        }
 
     }
     public void setOnItemClickLitener(WordAdapter.OnItemClickLitener mOnItemClickLitener) {

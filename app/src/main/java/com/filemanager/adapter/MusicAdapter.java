@@ -35,7 +35,11 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
     public MusicAdapter(Context context, List<File> Data) {
         this.mDatas = Data;
         this.mContext = context;
-        mCache = ACache.get(mContext);
+        try {
+            mCache = ACache.get(mContext);
+        }catch (Exception e){
+            //子线程未销毁可能时执行
+        }
 
     }
 

@@ -39,7 +39,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
         this.mDatas = Data;
         this.mContext = context;
         mHeights = new ArrayList<Integer>();
-        mCache = ACache.get(mContext);
+        try {
+            mCache = ACache.get(mContext);
+        }catch (Exception e){
+            //子线程未销毁可能时执行
+        }
         for (int i = 0; i < mDatas.size(); i++) {
             mHeights.add((int) (300 + Math.random() * 500));
         }

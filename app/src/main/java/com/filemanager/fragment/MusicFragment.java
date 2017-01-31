@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -41,6 +43,28 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private TextView mLoadingText;
     private ACache mCatch;
     private SharedPreferences mPreferences;
+    private Handler myHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    mRecyclerView.setAdapter(mAdapter = new MusicAdapter(getContext(), mFiles));
+                    mLoading.setVisibility(View.INVISIBLE);
+                    mLoadingText.setVisibility(View.INVISIBLE);
+                    mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                    mAdapter.setOnItemClickLitener(new MusicAdapter.OnItemClickLitener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                        }
+
+                        @Override
+                        public void onItemLongClick(View view, int position) {
+                        }
+                    });
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
 
 
     public MusicFragment() {
@@ -74,39 +98,30 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     private void initDate() {
         //开线程初始化数据
-        Thread mThread = new Thread(new Runnable() {
+
+        new Thread(new Runnable() {
+            private volatile boolean thread_run = true;
+
             @Override
             public void run() {
-
-                judge();
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        mRecyclerView.setAdapter(mAdapter = new MusicAdapter(getContext(), mFiles));
-                        mLoading.setVisibility(View.INVISIBLE);
-                        mLoadingText.setVisibility(View.INVISIBLE);
-                        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                        mAdapter.setOnItemClickLitener(new MusicAdapter.OnItemClickLitener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                            }
-
-                            @Override
-                            public void onItemLongClick(View view, int position) {
-                            }
-                        });
-                    }
-                });
+                while (thread_run) {
+                    judge();
+                    Message message = new Message();
+                    message.what = 1;
+                    myHandler.sendMessage(message);
+                    thread_run = false;
+                }
             }
-        });
-        mThread.start();
+        }).start();
     }
 
     private void judge() {
-        mPreferences = getContext().getSharedPreferences("table", Context.MODE_PRIVATE);
-
+        try {
+            mPreferences = getContext().getSharedPreferences("table", Context.MODE_PRIVATE);
+        } catch (Exception e) {
+            //子线程未销毁可能时执行
+        }
+        
         boolean first = mPreferences.getBoolean("firstMusic", true);
         int num = mPreferences.getInt("numMusic", 0);
         if (!first) {
@@ -162,6 +177,6 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 });
             }
         }).start();
-        
+
     }
 }

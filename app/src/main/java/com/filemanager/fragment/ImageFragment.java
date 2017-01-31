@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +46,29 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private ACache mCatch;
     private SharedPreferences mPreferences;
 
+    private Handler myHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    mRecyclerView.setAdapter(mAdapter = new ImageAdapter(getContext(), mFiles));
+                    mLoading.setVisibility(View.INVISIBLE);
+                    mLoadingText.setVisibility(View.INVISIBLE);
+                    mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                    mAdapter.setOnItemClickLitener(new ImageAdapter.OnItemClickLitener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                        }
+
+                        @Override
+                        public void onItemLongClick(View view, int position) {
+                        }
+                    });
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
 
     public ImageFragment() {
         // Required empty public constructor
@@ -63,60 +89,48 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         mGson = new Gson();
         mCatch = ACache.get(getContext());
 
-
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         mRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mRefreshLayout.setOnRefreshListener(this);
 
         initData();
-
         return ret;
     }
 
 
     private void initData() {
-
         //开线程初始化数据
+
         new Thread(new Runnable() {
+            private volatile boolean thread_run = true;
+
             @Override
             public void run() {
-
-                judge();
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        mRecyclerView.setAdapter(mAdapter = new ImageAdapter(getContext(), mFiles));
-                        mLoading.setVisibility(View.INVISIBLE);
-                        mLoadingText.setVisibility(View.INVISIBLE);
-                        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                        mAdapter.setOnItemClickLitener(new ImageAdapter.OnItemClickLitener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                            }
-
-                            @Override
-                            public void onItemLongClick(View view, int position) {
-                            }
-                        });
-                    }
-                });
+                while (thread_run) {
+                    judge();
+                    Message message = new Message();
+                    message.what = 1;
+                    myHandler.sendMessage(message);
+                    thread_run = false;
+                }
             }
         }).start();
-    
     }
 
     /**
      * 判断缓存是否存在，初始化数据
      */
     private void judge() {
-        mPreferences = getContext().getSharedPreferences("table", Context.MODE_PRIVATE);
-
+        try {
+            mPreferences = getContext().getSharedPreferences("table", Context.MODE_PRIVATE);
+        } catch (Exception e) {
+            //子线程未销毁可能时执行
+        }
         boolean first = mPreferences.getBoolean("firstImage", true);
         int num = mPreferences.getInt("numImage", 0);
         if (!first) {
             for (int i = 0; i < num; i++) {
+                Log.d("aaa", "judge: ");
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s);
                 if (!string.equals("null")) {
@@ -177,5 +191,6 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         }).start();
 
     }
+
 
 }

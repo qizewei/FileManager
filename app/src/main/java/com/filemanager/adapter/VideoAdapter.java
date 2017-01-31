@@ -35,7 +35,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
     public VideoAdapter(Context context, List<File> Data) {
         this.mDatas = Data;
         this.mContext = context;
-        mCache = ACache.get(mContext);
+        try {
+            mCache = ACache.get(mContext);
+        }catch (Exception e){
+            //子线程未销毁可能时执行
+        }
     }
 
     public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener) {
