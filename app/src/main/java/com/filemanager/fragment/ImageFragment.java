@@ -12,7 +12,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,7 +126,6 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         int num = mPreferences.getInt("numImage", 0);
         if (!first) {
             for (int i = 0; i < num; i++) {
-                Log.d("aaa", "judge: ");
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s);
                 if (!string.equals("null")) {
