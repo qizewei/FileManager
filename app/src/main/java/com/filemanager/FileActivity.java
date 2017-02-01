@@ -28,13 +28,14 @@ import java.text.DecimalFormat;
 public class FileActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     public static boolean isNight ;
-    private DrawerLayout mDrawerLayout;
     private TextView mFreeView;
     private TextView mTotalView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private long exitTime = 0;
     private GuillotineAnimation mAnimation;
     private SharedPreferences mTable;
+    private String mFreeS;
+    private String mToalS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +48,12 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.file_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.activity_file);
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.activity_file);
         mTable = getSharedPreferences("table",MODE_PRIVATE);
 
         ImageView menus = (ImageView) findViewById(R.id.content_hamburger);
         View guillotineMenu = LayoutInflater.from(this).inflate(R.layout.guillotine, null);
-        mDrawerLayout.addView(guillotineMenu);
+        drawerLayout.addView(guillotineMenu);
         mAnimation = new GuillotineAnimation.GuillotineBuilder(guillotineMenu, guillotineMenu.findViewById(R.id.guillotine_hamburger), menus)
                 .setStartDelay(250)
                 .setActionBarViewForAnimation(toolbar)
@@ -134,6 +135,8 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.file_bottom:
                 intent.setClass(this, MemoryActivity.class);
+                intent.putExtra("total",mToalS);
+                intent.putExtra("free",mFreeS);
                 startActivity(intent);
                 break;
             case R.id.menu_clear:
@@ -154,7 +157,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "已经是最新版本", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_about:
-                startActivity(new Intent(FileActivity.this, AboutActivity.class));
+                startActivity( new Intent(FileActivity.this, AboutActivity.class));
                 break;
             case R.id.menu_quit:
                 finish();
@@ -196,8 +199,8 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         float i = 1024 * 1024 * 1024;
         float bytes = sf.getTotalBytes() / i;
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数
-        String format = df.format(bytes);
-        mTotalView.setText(format);
+        mToalS = df.format(bytes);
+        mTotalView.setText(mToalS);
     }
 
     //    获取剩余的内存空间并控制显示
@@ -206,8 +209,8 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         float i = 1024 * 1024 * 1024;
         float bytes = sf.getFreeBytes() / i;
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数
-        String format = df.format(bytes);
-        mFreeView.setText(format);
+        mFreeS = df.format(bytes);
+        mFreeView.setText(mFreeS);
     }
 
     /**
