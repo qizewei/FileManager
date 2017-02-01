@@ -25,6 +25,7 @@ import com.filemanager.R;
 import com.filemanager.adapter.MusicAdapter;
 import com.filemanager.util.ACache;
 import com.google.gson.Gson;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -103,10 +104,10 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
             @Override
             public void run() {
-                    judge();
-                    Message message = new Message();
-                    message.what = 1;
-                    myHandler.sendMessage(message);
+                judge();
+                Message message = new Message();
+                message.what = 1;
+                myHandler.sendMessage(message);
             }
         }).start();
     }
@@ -117,7 +118,7 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         } catch (Exception e) {
             //子线程未销毁可能时执行
         }
-        
+
         boolean first = mPreferences.getBoolean("firstMusic", true);
         int num = mPreferences.getInt("numMusic", 0);
         if (!first) {
@@ -174,5 +175,15 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             }
         }).start();
 
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("MainScreen"); //统计页面，"MainScreen"为页面名称，可自定义
+    }
+
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("MainScreen");
     }
 }

@@ -11,11 +11,12 @@ import com.filemanager.fragment.MusicFragment;
 import com.filemanager.fragment.VideoFragment;
 import com.filemanager.fragment.WordFragment;
 import com.filemanager.fragment.ZipFragment;
+import com.umeng.analytics.MobclickAgent;
 
 public class ShowActivity extends AppCompatActivity {
 
     @Override
-    
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show);
@@ -43,8 +44,19 @@ public class ShowActivity extends AppCompatActivity {
             case "zip":
                 transaction.add(R.id.show_detial, new ZipFragment());
                 break;
-            
+
         }
         transaction.commit();
     }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
 }

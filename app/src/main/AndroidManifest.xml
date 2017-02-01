@@ -4,11 +4,16 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    
+    <!--Bmob-->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--友盟-->
+    <uses-sdk android:minSdkVersion="4"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,18 +26,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".FileActivity">
-        </activity>
         <activity
             android:name=".ShowActivity"
             android:launchMode="singleTask">
         </activity>
-        <activity android:name=".MemoryActivity">
-        </activity>
-        <activity android:name=".AboutActivity">
-        </activity>
-        <activity android:name=".FindFileActivity">
-        </activity>
+        <activity android:name=".FileActivity"/>
+        <activity android:name=".MemoryActivity"/>
+        <activity android:name=".AboutActivity"/>
+
+        <meta-data android:value="5891b3acf43e480bb4001203" android:name="UMENG_APPKEY"/>
+        <meta-data android:value="MoRen" android:name="UMENG_CHANNEL"/>
     </application>
 
 </manifest>

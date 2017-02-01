@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.filemanager.util.ACache;
+import com.umeng.analytics.MobclickAgent;
 import com.yalantis.guillotine.animation.GuillotineAnimation;
 import com.yalantis.guillotine.interfaces.GuillotineListener;
 
@@ -262,5 +263,12 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
             }
         }).start();
     }
-    
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 }

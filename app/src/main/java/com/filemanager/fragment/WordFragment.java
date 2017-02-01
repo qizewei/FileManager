@@ -25,6 +25,7 @@ import com.filemanager.R;
 import com.filemanager.adapter.WordAdapter;
 import com.filemanager.util.ACache;
 import com.google.gson.Gson;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -102,10 +103,10 @@ public class WordFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         new Thread(new Runnable() {
             @Override
             public void run() {
-                    judge();
-                    Message message = new Message();
-                    message.what = 1;
-                    myHandler.sendMessage(message);
+                judge();
+                Message message = new Message();
+                message.what = 1;
+                myHandler.sendMessage(message);
             }
         }).start();
     }
@@ -173,5 +174,15 @@ public class WordFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }).start();
 
 
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("MainScreen"); //统计页面，"MainScreen"为页面名称，可自定义
+    }
+
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("MainScreen");
     }
 }
