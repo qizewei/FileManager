@@ -27,7 +27,7 @@ import java.text.DecimalFormat;
 
 public class FileActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    public static boolean isNight = false;
+    public static boolean isNight ;
     private DrawerLayout mDrawerLayout;
     private TextView mFreeView;
     private TextView mTotalView;

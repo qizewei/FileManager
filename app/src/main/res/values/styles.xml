@@ -22,7 +22,7 @@
         <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
-    
+
     <style name="file_gride">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -38,14 +38,14 @@
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/textColor</item>
     </style>
-    
+
     <style name="file_bottom_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#000</item>
         <item name="android:textSize">17sp</item>
     </style>
-   
+
     <style name="file_cardView">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -64,14 +64,23 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">#fff</item>
     </style>
+
     <style name="Toolbar">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
     <style name="ImageView.Hamburger" parent="Widget.AppCompat.ActionButton">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="DetialStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">17sp</item>
     </style>
 </resources>

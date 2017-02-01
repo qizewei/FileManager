@@ -39,7 +39,7 @@
                     android:layout_gravity="center"
                     android:gravity="center_vertical"
                     android:text="快客"
-                    android:textColor="#fff"
+                    android:textColor="@color/textColor2"
                     android:textSize="21sp"/>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>

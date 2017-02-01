@@ -1,14 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_memory"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/backGround"
+    android:fitsSystemWindows="true"
     tools:context="com.filemanager.MemoryActivity">
- 
-</RelativeLayout>
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/Detial_toolbar"
+            app:contentInsetStart="0dp"
+            app:titleTextColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/colorPrimary">
+            
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:text="设备信息"
+                android:textColor="@color/textColor2"
+                android:textSize="21sp"/>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="47dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="设备参数："
+            android:textColor="@color/textColor"
+            android:textSize="21sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetialStyle"
+                android:text="设备型号："
+                />
+
+            <TextView
+                android:id="@+id/detial_model"
+                style="@style/DetialStyle"
+                android:text="未获取"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetialStyle"
+                android:text="生产厂商："
+                />
+
+            <TextView
+                android:id="@+id/detial_factory"
+                style="@style/DetialStyle"
+                android:text="未获取"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetialStyle"
+                android:text="Root状态："
+                />
+
+            <TextView
+                android:id="@+id/detial_root"
+                style="@style/DetialStyle"
+                android:text="未获取"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetialStyle"
+                android:text="设备IMEI："
+                />
+
+            <TextView
+                android:id="@+id/detial_imei"
+                style="@style/DetialStyle"
+                android:text="未获取"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetialStyle"
+                android:text="Android版本："
+                />
+
+            <TextView
+                android:id="@+id/detial_version"
+                style="@style/DetialStyle"
+                android:text="未获取"
+                />
+
+        </LinearLayout>
+       
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
