@@ -48,6 +48,7 @@
             android:layout_below="@id/loading_gif"
             android:layout_centerHorizontal="true"
             android:text="正在扫描磁盘，请稍后..."
+            android:textColor="@color/textColor"
             android:textSize="12sp"
             />
 

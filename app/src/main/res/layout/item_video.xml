@@ -18,7 +18,7 @@
             android:id="@+id/video_linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fff"
+            android:background="@color/BColor"
             android:orientation="horizontal"
             android:padding="7dp"
             >
@@ -33,6 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:textColor="@color/textColor"
                 android:text="fileame"/>
 
         </LinearLayout>

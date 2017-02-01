@@ -72,7 +72,7 @@
                 <TextView
                     style="@style/file_bottom_text"
                     android:text="总共："
-                    android:textColor="#000"
+                    android:textColor="@color/textColor"
                     />
 
                 <TextView
@@ -80,21 +80,25 @@
                     style="@style/file_bottom_text"
                     android:text="正在读取"
                     android:textSize="19sp"
+                    android:textColor="@color/textColor"
                     />
 
                 <TextView
                     style="@style/file_bottom_text"
                     android:paddingLeft="4dp"
+                    android:textColor="@color/textColor"
                     android:text="GB"/>
 
                 <TextView
                     style="@style/file_bottom_text"
                     android:paddingLeft="21dp"
+                    android:textColor="@color/textColor"
                     android:text="剩余："/>
 
                 <TextView
                     android:id="@+id/free_number"
                     style="@style/file_bottom_text"
+                    android:textColor="@color/textColor"
                     android:text="正在读取"
                     android:textSize="19sp"
                     />
@@ -102,6 +106,7 @@
                 <TextView
                     style="@style/file_bottom_text"
                     android:paddingLeft="4dp"
+                    android:textColor="@color/textColor"
                     android:text="GB"/>
             </LinearLayout>
 

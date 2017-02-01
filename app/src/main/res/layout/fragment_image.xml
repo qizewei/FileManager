@@ -48,6 +48,7 @@
             android:layout_below="@id/loading_gif"
             android:textSize="12sp"
             android:layout_centerHorizontal="true"
+            android:textColor="@color/textColor"
             />
 
     <android.support.v4.widget.SwipeRefreshLayout

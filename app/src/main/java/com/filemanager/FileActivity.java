@@ -21,18 +21,20 @@ import android.widget.Toast;
 
 import com.filemanager.util.ACache;
 import com.yalantis.guillotine.animation.GuillotineAnimation;
+import com.yalantis.guillotine.interfaces.GuillotineListener;
 
 import java.text.DecimalFormat;
 
 public class FileActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
+    public static boolean isNight = false;
     private DrawerLayout mDrawerLayout;
     private TextView mFreeView;
     private TextView mTotalView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private long exitTime = 0;
     private GuillotineAnimation mAnimation;
-    public static boolean isNight = false;
+    private SharedPreferences mTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +48,30 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.activity_file);
-        
-        ImageView menus = (ImageView)findViewById(R.id.content_hamburger); 
+        mTable = getSharedPreferences("table",MODE_PRIVATE);
+
+        ImageView menus = (ImageView) findViewById(R.id.content_hamburger);
         View guillotineMenu = LayoutInflater.from(this).inflate(R.layout.guillotine, null);
         mDrawerLayout.addView(guillotineMenu);
         mAnimation = new GuillotineAnimation.GuillotineBuilder(guillotineMenu, guillotineMenu.findViewById(R.id.guillotine_hamburger), menus)
                 .setStartDelay(250)
                 .setActionBarViewForAnimation(toolbar)
                 .setClosedOnStart(true)
-                .build();
+                .setGuillotineListener(new GuillotineListener() {
+                    @Override
+                    public void onGuillotineOpened() {
+                        mTable.edit().putBoolean("menuOpen",true).commit();
+                    }
 
-      
+                    @Override
+                    public void onGuillotineClosed() {
+                        mTable.edit().putBoolean("menuOpen",false).commit();
+                    }
+                })
+                .build();
+        
+
+
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.file_refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -68,15 +83,13 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.file_apk).setOnClickListener(this);
         findViewById(R.id.file_zip).setOnClickListener(this);
         findViewById(R.id.file_bottom).setOnClickListener(this);
-        
+
         findViewById(R.id.menu_clear).setOnClickListener(this);
         findViewById(R.id.menu_check).setOnClickListener(this);
         findViewById(R.id.menu_about).setOnClickListener(this);
         findViewById(R.id.menu_quit).setOnClickListener(this);
         findViewById(R.id.menu_title).setOnClickListener(this);
-        
-        
-    
+
 
         //底边栏存储空间显示
         mFreeView = (TextView) findViewById(R.id.free_number);
@@ -160,17 +173,16 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences table = getSharedPreferences("table", MODE_PRIVATE);
+        mTable = getSharedPreferences("table", MODE_PRIVATE);
         switch (item.getItemId()) {
             case R.id.toolbar_find:
-                isNight = table.getBoolean("night", false);
+                isNight = mTable.getBoolean("night", false);
                 if (isNight) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    table.edit().putBoolean("night", false).commit();
-                    
+                    mTable.edit().putBoolean("night", false).commit();
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    table.edit().putBoolean("night", true).commit();
+                    mTable.edit().putBoolean("night", true).commit();
                 }
                 recreate();
                 break;
@@ -208,6 +220,11 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            boolean open = mTable.getBoolean("menuOpen", false);
+            if (open) {
+                mAnimation.close();
+                return true;
+            }
             if ((System.currentTimeMillis() - exitTime) > 2000) {
                 Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
@@ -219,7 +236,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         return super.onKeyDown(keyCode, event);
     }
 
- 
+
     @Override
     public void onRefresh() {
         new Thread(new Runnable() {
