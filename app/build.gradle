@@ -15,7 +15,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -37,7 +38,8 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.android.support:design:25.1.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'cn.bmob.android:bmob-sdk:3.5.0'
     compile 'com.github.Yalantis:GuillotineMenu-Android:1.2'
     compile 'com.umeng.analytics:analytics:latest.integration'
+    compile files('libs/BmobStat_v1.1_170114.jar')
+    compile 'com.google.code.gson:gson:2.2.4'
 }
