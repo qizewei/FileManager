@@ -7,4 +7,5 @@
     <color name="textColor">#1d1d1d</color>
     <color name="textColor2">#ffffff</color>
     <color name="BColor">#fff</color>
+    <color name="button">#a9a9a9</color>
 </resources>

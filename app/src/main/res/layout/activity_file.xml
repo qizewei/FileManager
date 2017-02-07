@@ -26,11 +26,12 @@
                 android:background="@color/colorPrimary"
                 app:contentInsetStart="0dp"
                 app:titleTextColor="#fff">
+
                 <ImageView
                     android:id="@+id/content_hamburger"
                     style="@style/ImageView.Hamburger"
-                    android:src="@drawable/ic_menu"
                     android:layout_gravity="left"
+                    android:src="@drawable/ic_menu"
                     />
 
                 <TextView
@@ -57,12 +58,17 @@
                 android:layout_height="3dp"
                 android:background="@color/colorPrimary"/>
 
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_margin="7dp"
+    >
             <LinearLayout
                 android:id="@+id/file_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="@color/BColor"
+                android:background="@drawable/button_select"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingBottom="12dp"
@@ -79,36 +85,37 @@
                     android:id="@+id/total_number"
                     style="@style/file_bottom_text"
                     android:text="正在读取"
-                    android:textSize="19sp"
                     android:textColor="@color/textColor"
+                    android:textSize="19sp"
                     />
 
                 <TextView
                     style="@style/file_bottom_text"
                     android:paddingLeft="4dp"
-                    android:textColor="@color/textColor"
-                    android:text="GB"/>
+                    android:text="GB"
+                    android:textColor="@color/textColor"/>
 
                 <TextView
                     style="@style/file_bottom_text"
                     android:paddingLeft="21dp"
-                    android:textColor="@color/textColor"
-                    android:text="剩余："/>
+                    android:text="剩余："
+                    android:textColor="@color/textColor"/>
 
                 <TextView
                     android:id="@+id/free_number"
                     style="@style/file_bottom_text"
-                    android:textColor="@color/textColor"
                     android:text="正在读取"
+                    android:textColor="@color/textColor"
                     android:textSize="19sp"
                     />
 
                 <TextView
                     style="@style/file_bottom_text"
                     android:paddingLeft="4dp"
-                    android:textColor="@color/textColor"
-                    android:text="GB"/>
+                    android:text="GB"
+                    android:textColor="@color/textColor"/>
             </LinearLayout>
+</android.support.v7.widget.CardView>
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/file_refresh"
@@ -118,7 +125,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:orientation="vertical"
                     android:padding="10dp">

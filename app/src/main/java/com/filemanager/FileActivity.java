@@ -2,6 +2,7 @@ package com.filemanager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
@@ -16,9 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.filemanager.util.ACache;
 import com.umeng.analytics.MobclickAgent;
 import com.yalantis.guillotine.animation.GuillotineAnimation;
@@ -28,7 +32,7 @@ import java.text.DecimalFormat;
 
 public class FileActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    public static boolean isNight ;
+    public static boolean isNight;
     private TextView mFreeView;
     private TextView mTotalView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -50,7 +54,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.activity_file);
-        mTable = getSharedPreferences("table",MODE_PRIVATE);
+        mTable = getSharedPreferences("table", MODE_PRIVATE);
 
         ImageView menus = (ImageView) findViewById(R.id.content_hamburger);
         View guillotineMenu = LayoutInflater.from(this).inflate(R.layout.guillotine, null);
@@ -62,41 +66,62 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 .setGuillotineListener(new GuillotineListener() {
                     @Override
                     public void onGuillotineOpened() {
-                        mTable.edit().putBoolean("menuOpen",true).commit();
+                        mTable.edit().putBoolean("menuOpen", true).commit();
                     }
 
                     @Override
                     public void onGuillotineClosed() {
-                        mTable.edit().putBoolean("menuOpen",false).commit();
+                        mTable.edit().putBoolean("menuOpen", false).commit();
                     }
                 })
                 .build();
-        
 
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.file_refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-
-        findViewById(R.id.file_image).setOnClickListener(this);
-        findViewById(R.id.file_music).setOnClickListener(this);
-        findViewById(R.id.file_video).setOnClickListener(this);
-        findViewById(R.id.file_word).setOnClickListener(this);
-        findViewById(R.id.file_apk).setOnClickListener(this);
-        findViewById(R.id.file_zip).setOnClickListener(this);
         findViewById(R.id.file_bottom).setOnClickListener(this);
+        
+        LinearLayout image = (LinearLayout) findViewById(R.id.file_image);
+        LinearLayout music = (LinearLayout) findViewById(R.id.file_music);
+        LinearLayout video = (LinearLayout) findViewById(R.id.file_video);
+        LinearLayout word = (LinearLayout) findViewById(R.id.file_word);
+        LinearLayout apk = (LinearLayout) findViewById(R.id.file_apk);
+        LinearLayout zip = (LinearLayout) findViewById(R.id.file_zip);
+        zip.setOnClickListener(this);
+        apk.setOnClickListener(this);
+        video.setOnClickListener(this);
+        music.setOnClickListener(this);
+        image.setOnClickListener(this);
+        word.setOnClickListener(this);
+        
+        MaterialRippleLayout.on(image).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
+        MaterialRippleLayout.on(apk).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
+        MaterialRippleLayout.on(zip).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
+        MaterialRippleLayout.on(video).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
+        MaterialRippleLayout.on(word).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
+        MaterialRippleLayout.on(music).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
 
-        findViewById(R.id.menu_clear).setOnClickListener(this);
-        findViewById(R.id.menu_check).setOnClickListener(this);
-        findViewById(R.id.menu_about).setOnClickListener(this);
-        findViewById(R.id.menu_quit).setOnClickListener(this);
-        findViewById(R.id.menu_title).setOnClickListener(this);
+        LinearLayout clear = (LinearLayout) findViewById(R.id.menu_clear);
+        LinearLayout check = (LinearLayout) findViewById(R.id.menu_check);
+        LinearLayout about = (LinearLayout) findViewById(R.id.menu_about);
+        LinearLayout quit = (LinearLayout) findViewById(R.id.menu_quit);
+        RelativeLayout title = (RelativeLayout) findViewById(R.id.menu_title);
+        check.setOnClickListener(this);
+        clear.setOnClickListener(this);
+        about.setOnClickListener(this);
+        quit.setOnClickListener(this);
+        title.setOnClickListener(this);
+        MaterialRippleLayout.on(check).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
+        MaterialRippleLayout.on(clear).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
+        MaterialRippleLayout.on(about).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
+        MaterialRippleLayout.on(quit).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
+        MaterialRippleLayout.on(title).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
 
 
         //底边栏存储空间显示
         mFreeView = (TextView) findViewById(R.id.free_number);
         mTotalView = (TextView) findViewById(R.id.total_number);
-
         getFreeSpace();
         getTotalSpace();
     }
@@ -137,8 +162,8 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.file_bottom:
                 intent.setClass(this, MemoryActivity.class);
-                intent.putExtra("total",mToalS);
-                intent.putExtra("free",mFreeS);
+                intent.putExtra("total", mToalS);
+                intent.putExtra("free", mFreeS);
                 startActivity(intent);
                 break;
             case R.id.menu_clear:
@@ -159,7 +184,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "已经是最新版本", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_about:
-                startActivity( new Intent(FileActivity.this, AboutActivity.class));
+                startActivity(new Intent(FileActivity.this, AboutActivity.class));
                 break;
             case R.id.menu_quit:
                 finish();
@@ -202,7 +227,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         float bytes = 0;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
             bytes = sf.getTotalBytes() / i;
-        }else {
+        } else {
             Toast.makeText(this, "您的手机版本太低，暂时不支持内存查询", Toast.LENGTH_SHORT).show();
         }
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数
@@ -272,10 +297,12 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
             }
         }).start();
     }
+
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
     }
+
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);

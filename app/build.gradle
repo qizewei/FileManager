@@ -42,4 +42,5 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile files('libs/BmobStat_v1.1_170114.jar')
     compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.balysv:material-ripple:1.0.2'
 }
