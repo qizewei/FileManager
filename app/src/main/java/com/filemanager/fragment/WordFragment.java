@@ -119,7 +119,11 @@ public class WordFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
         boolean first = mPreferences.getBoolean("firstWord", true);
         int num = mPreferences.getInt("numWord", 0);
-        if (!first) {
+        long time = mPreferences.getLong("WordTime", 0);
+        long cha = System.currentTimeMillis() - time;
+        //判断缓存时间是否过期
+
+        if (!first && time != 0 & cha < 86400000) {
             for (int i = 0; i < num; i++) {
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s + "word");
@@ -151,6 +155,7 @@ public class WordFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         SharedPreferences.Editor edit = mPreferences.edit();
         edit.putBoolean("firstWord", false);
         edit.putInt("numWord", strings.size());
+        edit.putLong("WordTime", System.currentTimeMillis());
         edit.commit();
     }
 

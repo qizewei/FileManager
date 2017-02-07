@@ -124,7 +124,12 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         }
         boolean first = mPreferences.getBoolean("firstImage", true);
         int num = mPreferences.getInt("numImage", 0);
-        if (!first) {
+        
+        long time = mPreferences.getLong("ImageTime", 0);
+        long cha = System.currentTimeMillis() - time;
+        //判断缓存时间是否过期
+
+        if (!first && time!=0 & cha<86400000 ) {
             for (int i = 0; i < num; i++) {
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s);
@@ -160,6 +165,7 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         SharedPreferences.Editor edit = mPreferences.edit();
         edit.putBoolean("firstImage", false);
         edit.putInt("numImage", strings.size());
+        edit.putLong("ImageTime",System.currentTimeMillis());
         edit.commit();
     }
 

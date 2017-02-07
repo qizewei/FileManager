@@ -118,7 +118,12 @@ public class ZipFragment extends Fragment implements SwipeRefreshLayout.OnRefres
 
         boolean first = mPreferences.getBoolean("firstZip", true);
         int num = mPreferences.getInt("numZip", 0);
-        if (!first) {
+        
+        long time = mPreferences.getLong("ZipTime", 0);
+        long cha = System.currentTimeMillis() - time;
+        //判断缓存时间是否过期
+
+        if (!first && time != 0 & cha < 86400000) {
             for (int i = 0; i < num; i++) {
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s + "zip");
@@ -150,6 +155,7 @@ public class ZipFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         SharedPreferences.Editor edit = mPreferences.edit();
         edit.putBoolean("firstZip", false);
         edit.putInt("numZip", strings.size());
+        edit.putLong("ZipTime", System.currentTimeMillis());
         edit.commit();
     }
 

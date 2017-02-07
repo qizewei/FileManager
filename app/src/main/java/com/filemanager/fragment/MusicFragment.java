@@ -121,7 +121,12 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         boolean first = mPreferences.getBoolean("firstMusic", true);
         int num = mPreferences.getInt("numMusic", 0);
-        if (!first) {
+        
+        long time = mPreferences.getLong("MusicTime", 0);
+        long cha = System.currentTimeMillis() - time;
+        //判断缓存时间是否过期
+        
+        if (!first && time!=0 & cha<86400000) {
             for (int i = 0; i < num; i++) {
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s + "music");
@@ -153,6 +158,7 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         SharedPreferences.Editor edit = mPreferences.edit();
         edit.putBoolean("firstMusic", false);
         edit.putInt("numMusic", strings.size());
+        edit.putLong("MusicTime",System.currentTimeMillis());
         edit.commit();
     }
 

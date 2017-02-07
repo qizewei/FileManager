@@ -118,7 +118,12 @@ public class ApkFragment extends Fragment implements SwipeRefreshLayout.OnRefres
 
         boolean first = mPreferences.getBoolean("firstApk", true);
         int num = mPreferences.getInt("numApk", 0);
-        if (!first) {
+
+        long time = mPreferences.getLong("ApkTime", 0);
+        long cha = System.currentTimeMillis() - time;
+        //判断缓存时间是否过期
+
+        if (!first && time != 0 & cha < 86400000) {
             for (int i = 0; i < num; i++) {
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s + "apk");
@@ -149,6 +154,7 @@ public class ApkFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         SharedPreferences.Editor edit = mPreferences.edit();
         edit.putBoolean("firstApk", false);
         edit.putInt("numApk", strings.size());
+        edit.putLong("ApkTime", System.currentTimeMillis());
         edit.commit();
     }
 
