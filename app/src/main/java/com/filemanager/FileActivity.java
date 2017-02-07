@@ -96,6 +96,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         //底边栏存储空间显示
         mFreeView = (TextView) findViewById(R.id.free_number);
         mTotalView = (TextView) findViewById(R.id.total_number);
+
         getFreeSpace();
         getTotalSpace();
     }
@@ -198,7 +199,12 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
     public void getTotalSpace() {
         StatFs sf = new StatFs(Environment.getExternalStorageDirectory().getPath());
         float i = 1024 * 1024 * 1024;
-        float bytes = sf.getTotalBytes() / i;
+        float bytes = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            bytes = sf.getTotalBytes() / i;
+        }else {
+            Toast.makeText(this, "您的手机版本太低，暂时不支持内存查询", Toast.LENGTH_SHORT).show();
+        }
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数
         mToalS = df.format(bytes);
         mTotalView.setText(mToalS);
@@ -208,7 +214,10 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
     public void getFreeSpace() {
         StatFs sf = new StatFs(Environment.getExternalStorageDirectory().getPath());
         float i = 1024 * 1024 * 1024;
-        float bytes = sf.getFreeBytes() / i;
+        float bytes = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            bytes = sf.getFreeBytes() / i;
+        }
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数
         mFreeS = df.format(bytes);
         mFreeView.setText(mFreeS);
