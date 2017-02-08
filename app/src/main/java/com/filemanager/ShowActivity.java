@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.filemanager.fragment.ApkFragment;
+import com.filemanager.fragment.FileNameFragment;
 import com.filemanager.fragment.ImageFragment;
 import com.filemanager.fragment.MusicFragment;
 import com.filemanager.fragment.VideoFragment;
@@ -43,6 +44,9 @@ public class ShowActivity extends AppCompatActivity {
                 break;
             case "zip":
                 transaction.add(R.id.show_detial, new ZipFragment());
+                break;
+            case "filename":
+                transaction.add(R.id.show_detial,new FileNameFragment());
                 break;
 
         }

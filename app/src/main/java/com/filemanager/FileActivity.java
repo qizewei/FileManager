@@ -1,5 +1,6 @@
 package com.filemanager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,6 +27,8 @@ import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.filemanager.util.ACache;
+import com.filemanager.util.Fab;
+import com.gordonwong.materialsheetfab.MaterialSheetFab;
 import com.umeng.analytics.MobclickAgent;
 import com.yalantis.guillotine.animation.GuillotineAnimation;
 import com.yalantis.guillotine.interfaces.GuillotineListener;
@@ -41,6 +46,8 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences mTable;
     private String mFreeS;
     private String mToalS;
+
+    private MaterialSheetFab materialSheetFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +88,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         findViewById(R.id.file_bottom).setOnClickListener(this);
-        
+
         LinearLayout image = (LinearLayout) findViewById(R.id.file_image);
         LinearLayout music = (LinearLayout) findViewById(R.id.file_music);
         LinearLayout video = (LinearLayout) findViewById(R.id.file_video);
@@ -94,7 +101,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         music.setOnClickListener(this);
         image.setOnClickListener(this);
         word.setOnClickListener(this);
-        
+
         MaterialRippleLayout.on(image).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
         MaterialRippleLayout.on(apk).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
         MaterialRippleLayout.on(zip).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
@@ -124,12 +131,50 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         mTotalView = (TextView) findViewById(R.id.total_number);
         getFreeSpace();
         getTotalSpace();
+
+
+        Fab fab = (Fab) findViewById(R.id.fab);
+        View sheetView = findViewById(R.id.fab_sheet);
+        View overlay = findViewById(R.id.overlay);
+        int sheetColor = getResources().getColor(R.color.textColor2);
+        int fabColor = getResources().getColor(R.color.colorAccent);
+
+        // Initialize material sheet FAB
+        materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay,
+                sheetColor, fabColor);
+        findViewById(R.id.name_search).setOnClickListener(this);
     }
+
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent();
+        final Intent intent = new Intent();
         switch (v.getId()) {
+            case R.id.name_search:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                final EditText userId = new EditText(this);
+                builder.setTitle("请输入文件名：")
+                        .setCancelable(false)
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String FileName = userId.getText().toString().trim();
+                                if (FileName.equals("")) {
+                                    Toast.makeText(FileActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Intent intent = new Intent(FileActivity.this, ShowActivity.class);
+                                    intent.putExtra("class", "filename");
+                                    intent.putExtra("filename",FileName);
+                                    startActivity(intent);
+                                }
+                            }
+                        })
+                        .setView(userId, 150, 20, 70, 20)
+                        .show();
+
+                materialSheetFab.hideSheet();
+                break;
             case R.id.file_image:
                 intent.setClass(this, ShowActivity.class);
                 intent.putExtra("class", "image");
@@ -263,6 +308,11 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 mAnimation.close();
                 return true;
             }
+            if (materialSheetFab.isSheetVisible()) {
+                materialSheetFab.hideSheet();
+                return true;
+            }
+
             if ((System.currentTimeMillis() - exitTime) > 2000) {
                 Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
