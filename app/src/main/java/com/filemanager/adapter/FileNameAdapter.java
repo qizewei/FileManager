@@ -69,6 +69,7 @@ public class FileNameAdapter  extends RecyclerView.Adapter<FileNameAdapter.MyVie
                 public boolean onLongClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     final EditText userId = new EditText(mContext);
+                    userId.setHint("注意请加上文件后缀名，例如:.mp4");
                     builder.setTitle("请输入新命名：")
                             .setCancelable(false)
                             .setNegativeButton("取消", null)
@@ -80,11 +81,11 @@ public class FileNameAdapter  extends RecyclerView.Adapter<FileNameAdapter.MyVie
                                         Toast.makeText(mContext, "输入不能为空", Toast.LENGTH_SHORT).show();
                                     } else {
                                         //重命名File
-                                        FileUtils.rename(mDatas.get(position), newName + ".mp4");
+                                        FileUtils.rename(mDatas.get(position), newName );
 
                                         //更新显示数据
                                         String path = mDatas.get(position).getParent();
-                                        File file = new File(path + "/" + newName + ".mp4");
+                                        File file = new File(path + "/" + newName);
                                         mDatas.remove(position);
                                         mDatas.add(position, file);
                                         notifyDataSetChanged();
@@ -158,7 +159,7 @@ public class FileNameAdapter  extends RecyclerView.Adapter<FileNameAdapter.MyVie
         TextView tv, file_file_delete;
         LinearLayout mLayout;
 
-        public MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
             tv = (TextView) view.findViewById(R.id.item_file_name);
             mLayout = (LinearLayout) view.findViewById(R.id.file_linear);

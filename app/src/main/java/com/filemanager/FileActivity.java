@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -142,7 +143,10 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         // Initialize material sheet FAB
         materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay,
                 sheetColor, fabColor);
-        findViewById(R.id.name_search).setOnClickListener(this);
+        TextView search = (TextView)findViewById(R.id.name_search);
+        search.setOnClickListener(this);
+        MaterialRippleLayout.on(search).rippleColor(R.color.colorAccent).rippleOverlay(true).rippleAlpha((float) 0.7).create();
+
     }
 
 
@@ -153,6 +157,8 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.name_search:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 final EditText userId = new EditText(this);
+                userId.setHint("注意请加上文件后缀名，例如:.mp4");
+                userId.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
                 builder.setTitle("请输入文件名：")
                         .setCancelable(false)
                         .setNegativeButton("取消", null)
@@ -170,7 +176,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             }
                         })
-                        .setView(userId, 150, 20, 70, 20)
+                        .setView(userId, 150, 17, 70, 20)
                         .show();
 
                 materialSheetFab.hideSheet();

@@ -45,6 +45,7 @@ public class FileNameFragment extends Fragment implements SwipeRefreshLayout.OnR
     private ACache mCatch;
     private SharedPreferences mPreferences;
     private String filename;
+    private TextView noSearch;
     private Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -62,6 +63,11 @@ public class FileNameFragment extends Fragment implements SwipeRefreshLayout.OnR
                         public void onItemLongClick(View view, int position) {
                         }
                     });
+                    break;
+                case  0:
+                    mLoading.setVisibility(View.INVISIBLE);
+                    mLoadingText.setVisibility(View.INVISIBLE);
+                    noSearch.setVisibility(View.VISIBLE);
                     break;
             }
             super.handleMessage(msg);
@@ -84,6 +90,7 @@ public class FileNameFragment extends Fragment implements SwipeRefreshLayout.OnR
         mLoadingText = (TextView) ret.findViewById(R.id.loading_text);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
         mRefreshLayout = (SwipeRefreshLayout) ret.findViewById(R.id.filename_refresh);
+        noSearch = (TextView)ret.findViewById(R.id.no_search); 
         Glide.with(getContext()).load(R.drawable.loading)
                 .asGif().into(mLoading);
         mFiles = new ArrayList<>();
@@ -103,8 +110,12 @@ public class FileNameFragment extends Fragment implements SwipeRefreshLayout.OnR
                 filename = getActivity().getIntent().getStringExtra("filename");
                 mFiles = FileUtils.searchFileInDir(Environment.getExternalStorageDirectory(),filename);
                 Log.d("aaa", "run: "+ mFiles.size());
+               
                 Message message = new Message();
-                message.what = 1;
+                if (mFiles.size()==0) {
+                    message.what = 0;
+                }else 
+                    message.what = 1;
                 myHandler.sendMessage(message);
             }
         }).start();

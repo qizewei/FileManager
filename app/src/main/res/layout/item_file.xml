@@ -24,9 +24,10 @@
             >
 
             <ImageView
+                android:src="@mipmap/file_file"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/file_video"/>
+                />
 
             <TextView
                 android:id="@+id/item_file_name"
