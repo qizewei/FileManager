@@ -80,6 +80,16 @@ public class ZipFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View ret = inflater.inflate(R.layout.fragment_zip, container, false);
+
+        TextView title = (TextView) ret.findViewById(R.id.title);
+        title.setText("压缩包");
+        ImageView reicon = (ImageView)ret.findViewById(R.id.return_index);
+        reicon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
         mLoading = (ImageView) ret.findViewById(R.id.loading_gif);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
         mLoadingText = (TextView) ret.findViewById(R.id.loading_text);

@@ -207,6 +207,7 @@ android:background="@color/colorPrimary"
     </LinearLayout>
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -216,6 +217,5 @@ android:background="@color/colorPrimary"
         android:textSize="21sp"
         android:layout_alignBottom="@+id/toolbar"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="14dp"
-        android:id="@+id/textView2"/>
+        />
 </RelativeLayout>
