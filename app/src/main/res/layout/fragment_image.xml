@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,16 +24,16 @@
             android:gravity="center_vertical"
             android:paddingLeft="17dp"
             android:text="图片"
-            android:translationZ="4dp"
             android:textColor="#fff"
-            android:textSize="21sp"/>
+            android:textSize="21sp"
+            android:translationZ="4dp"/>
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="7dp"
-        android:paddingRight="7dp"
-       >
+        >
+
         <ImageView
             android:id="@+id/loading_gif"
             android:layout_width="200dp"
@@ -40,29 +41,34 @@
             android:layout_centerInParent="true"
             android:scaleType="fitXY"
             />
+
         <TextView
             android:id="@+id/loading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="正在扫描磁盘，请稍后..."
             android:layout_below="@id/loading_gif"
-            android:textSize="12sp"
             android:layout_centerHorizontal="true"
+            android:text="正在扫描磁盘，请稍后..."
             android:textColor="@color/textColor"
+            android:textSize="12sp"
             />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/image_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       >
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/id_recyclerview"
+        <com.yalantis.taurus.PullToRefreshView
+            android:id="@+id/pull_to_refresh_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:dividerHeight="10dp"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
-      
+            android:layout_height="match_parent"
+            >
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/id_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backGround"
+                android:paddingLeft="7dp"
+                android:paddingRight="7dp"
+                android:dividerHeight="10dp"/>
+
+        </com.yalantis.taurus.PullToRefreshView>
+
     </RelativeLayout>
 </LinearLayout>

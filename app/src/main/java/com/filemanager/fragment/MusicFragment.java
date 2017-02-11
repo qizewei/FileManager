@@ -8,7 +8,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -26,6 +25,7 @@ import com.filemanager.adapter.MusicAdapter;
 import com.filemanager.util.ACache;
 import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
+import com.yalantis.taurus.PullToRefreshView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,16 +34,17 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MusicFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private List<File> mFiles;
     private MusicAdapter mAdapter;
-    private SwipeRefreshLayout mRefreshLayout;
     private Gson mGson;
     private ImageView mLoading;
     private TextView mLoadingText;
     private ACache mCatch;
     private SharedPreferences mPreferences;
+    private PullToRefreshView mPullToRefreshView;
+
     private Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -83,7 +84,7 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
         mLoadingText = (TextView) ret.findViewById(R.id.loading_text);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
-        mRefreshLayout = (SwipeRefreshLayout) ret.findViewById(R.id.music_refresh);
+        mPullToRefreshView = (PullToRefreshView) ret.findViewById(R.id.pull_to_refresh_music);
         Glide.with(getContext()).load(R.drawable.loading)
                 .asGif().into(mLoading);
         mFiles = new ArrayList<>();
@@ -91,8 +92,32 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         mCatch = ACache.get(getContext());
 
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        mRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mRefreshLayout.setOnRefreshListener(this);
+        mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".mp3");
+                        addCatch();
+                        try {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    mAdapter.notifyDataSetChanged();
+                                    mPullToRefreshView.setRefreshing(false);
+                                    Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }catch (Exception e){
+                            
+                        }
+                    }
+                }).start();
+
+            }
+        });
         initDate();
         return ret;
     }
@@ -161,28 +186,7 @@ public class MusicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         edit.putLong("MusicTime",System.currentTimeMillis());
         edit.commit();
     }
-
-    @Override
-    public void onRefresh() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".mp3");
-                addCatch();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        mAdapter.notifyDataSetChanged();
-                        mRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        }).start();
-
-    }
-
+    
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("MainScreen"); //统计页面，"MainScreen"为页面名称，可自定义

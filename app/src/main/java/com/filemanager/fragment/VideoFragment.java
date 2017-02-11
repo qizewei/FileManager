@@ -8,7 +8,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +25,7 @@ import com.filemanager.adapter.VideoAdapter;
 import com.filemanager.util.ACache;
 import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
+import com.yalantis.taurus.PullToRefreshView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,12 +34,12 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VideoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class VideoFragment extends Fragment  {
 
     private RecyclerView mRecyclerView;
     private List<File> mFiles;
     private VideoAdapter mAdapter;
-    private SwipeRefreshLayout mRefreshLayout;
+    private PullToRefreshView mPullToRefreshView;
     private Gson mGson;
     private ImageView mLoading;
     private TextView mLoadingText;
@@ -82,15 +82,39 @@ public class VideoFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         mLoading = (ImageView) ret.findViewById(R.id.loading_gif);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
         mLoadingText = (TextView) ret.findViewById(R.id.loading_text);
-        mRefreshLayout = (SwipeRefreshLayout) ret.findViewById(R.id.video_refresh);
+        mPullToRefreshView = (PullToRefreshView) ret.findViewById(R.id.pull_to_refresh);
         Glide.with(getContext()).load(R.drawable.loading)
                 .asGif().into(mLoading);
         mFiles = new ArrayList<>();
         mGson = new Gson();
         mCatch = ACache.get(getContext());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mRefreshLayout.setOnRefreshListener(this);
+        mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".mp4");
+                        addCatch();
+                        try {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    mAdapter.notifyDataSetChanged();
+                                    mPullToRefreshView.setRefreshing(false);
+                                    Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }catch (Exception e){
+                            
+                        }
+                    }
+                }).start();
+
+            }
+        });
         initDate();
         return ret;
     }
@@ -156,27 +180,6 @@ public class VideoFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         edit.putInt("numVideo", strings.size());
         edit.putLong("VideoTime", System.currentTimeMillis());
         edit.commit();
-    }
-
-    @Override
-    public void onRefresh() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".mp4");
-                addCatch();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        mAdapter.notifyDataSetChanged();
-                        mRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        }).start();
-
     }
 
     public void onResume() {

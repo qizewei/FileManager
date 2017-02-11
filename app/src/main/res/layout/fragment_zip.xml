@@ -28,9 +28,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="7dp"
-        android:paddingRight="7dp">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/loading_gif"
@@ -51,19 +49,22 @@
             android:textSize="12sp"
             />
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/zip_refresh"
+        <com.yalantis.taurus.PullToRefreshView
+            android:id="@+id/pull_to_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/id_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/backGround"
                 android:paddingLeft="7dp"
                 android:paddingRight="7dp"
                 android:dividerHeight="10dp"/>
-        </android.support.v4.widget.SwipeRefreshLayout>
+
+        </com.yalantis.taurus.PullToRefreshView>
 
     </RelativeLayout>
 

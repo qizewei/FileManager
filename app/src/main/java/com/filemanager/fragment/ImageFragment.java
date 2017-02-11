@@ -8,7 +8,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -26,6 +25,7 @@ import com.filemanager.adapter.ImageAdapter;
 import com.filemanager.util.ACache;
 import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
+import com.yalantis.taurus.PullToRefreshView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,16 +35,16 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ImageFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private List<File> mFiles;
     private ImageAdapter mAdapter;
-    private SwipeRefreshLayout mRefreshLayout;
     private Gson mGson;
     private ImageView mLoading;
     private TextView mLoadingText;
     private ACache mCatch;
     private SharedPreferences mPreferences;
+    private PullToRefreshView mPullToRefreshView;
 
     private Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -82,7 +82,7 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         mLoading = (ImageView) ret.findViewById(R.id.loading_gif);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
         mLoadingText = (TextView) ret.findViewById(R.id.loading_text);
-        mRefreshLayout = (SwipeRefreshLayout) ret.findViewById(R.id.image_refresh);
+        mPullToRefreshView = (PullToRefreshView) ret.findViewById(R.id.pull_to_refresh_image);
         Glide.with(getContext()).load(R.drawable.loading)
                 .asGif().into(mLoading);
         mFiles = new ArrayList<>();
@@ -90,8 +90,30 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         mCatch = ACache.get(getContext());
 
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        mRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mRefreshLayout.setOnRefreshListener(this);
+        mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".jpg");
+                        addCatch();
+                        try {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mAdapter.notifyDataSetChanged();
+                                    mPullToRefreshView.setRefreshing(false);
+                                    Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } catch (Exception e) {
+                        }
+                    }
+                }).start();
+
+            }
+        });
 
         initData();
         return ret;
@@ -124,12 +146,12 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         }
         boolean first = mPreferences.getBoolean("firstImage", true);
         int num = mPreferences.getInt("numImage", 0);
-        
+
         long time = mPreferences.getLong("ImageTime", 0);
         long cha = System.currentTimeMillis() - time;
         //判断缓存时间是否过期
 
-        if (!first && time!=0 & cha<86400000 ) {
+        if (!first && time != 0 & cha < 86400000) {
             for (int i = 0; i < num; i++) {
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s);
@@ -165,32 +187,8 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         SharedPreferences.Editor edit = mPreferences.edit();
         edit.putBoolean("firstImage", false);
         edit.putInt("numImage", strings.size());
-        edit.putLong("ImageTime",System.currentTimeMillis());
+        edit.putLong("ImageTime", System.currentTimeMillis());
         edit.commit();
-    }
-
-    /**
-     * 下拉刷新
-     */
-    @Override
-    public void onRefresh() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".jpg");
-                addCatch();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        mAdapter.notifyDataSetChanged();
-                        mRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        }).start();
-
     }
 
     public void onResume() {

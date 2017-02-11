@@ -8,7 +8,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -26,6 +25,7 @@ import com.filemanager.adapter.ApkAdapter;
 import com.filemanager.util.ACache;
 import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
+import com.yalantis.taurus.PullToRefreshView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,16 +34,17 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ApkFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ApkFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private List<File> mFiles;
     private ApkAdapter mAdapter;
-    private SwipeRefreshLayout mRefreshLayout;
     private Gson mGson;
     private ImageView mLoading;
     private TextView mLoadingText;
     private ACache mCatch;
     private SharedPreferences mPreferences;
+    private PullToRefreshView mPullToRefreshView;
+
     private Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -82,7 +83,8 @@ public class ApkFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
         mLoadingText = (TextView) ret.findViewById(R.id.loading_text);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
-        mRefreshLayout = (SwipeRefreshLayout) ret.findViewById(R.id.apk_refresh);
+        mPullToRefreshView = (PullToRefreshView) ret.findViewById(R.id.pull_to_refresh);
+
         Glide.with(getContext()).load(R.drawable.loading)
                 .asGif().into(mLoading);
         mFiles = new ArrayList<>();
@@ -90,8 +92,32 @@ public class ApkFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         mCatch = ACache.get(getContext());
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
 
-        mRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mRefreshLayout.setOnRefreshListener(this);
+        mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".apk");
+                        addCatch();
+                        try{
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    mAdapter.notifyDataSetChanged();
+                                    mPullToRefreshView.setRefreshing(false);
+                                    Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
+                                }
+                            });}
+                        catch (Exception e){
+
+                        }
+                    }
+                }).start();
+
+            }
+        });
         initDate();
         return ret;
     }
@@ -156,28 +182,6 @@ public class ApkFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         edit.putInt("numApk", strings.size());
         edit.putLong("ApkTime", System.currentTimeMillis());
         edit.commit();
-    }
-
-    @Override
-    public void onRefresh() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".apk");
-                addCatch();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        mAdapter.notifyDataSetChanged();
-                        mRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        }).start();
-
-
     }
 
     public void onResume() {
