@@ -31,14 +31,14 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FileNameFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class FileTypeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView mRecyclerView;
     private List<File> mFiles;
     private FileNameAdapter mAdapter;
     private SwipeRefreshLayout mRefreshLayout;
     private ImageView mLoading;
     private TextView mLoadingText;
-    private String filename;
+    private String filetype;
     private TextView noSearch;
     private Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -58,7 +58,7 @@ public class FileNameFragment extends Fragment implements SwipeRefreshLayout.OnR
                         }
                     });
                     break;
-                case  0:
+                case 0:
                     mLoading.setVisibility(View.INVISIBLE);
                     mLoadingText.setVisibility(View.INVISIBLE);
                     noSearch.setVisibility(View.VISIBLE);
@@ -69,22 +69,22 @@ public class FileNameFragment extends Fragment implements SwipeRefreshLayout.OnR
     };
 
 
-    public FileNameFragment() {
-        // Required empty public constructor
+    public FileTypeFragment() {
+
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Required empty public constructor
         View ret = inflater.inflate(R.layout.fragment_file_name, container, false);
         mLoading = (ImageView) ret.findViewById(R.id.loading_gif);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
         mLoadingText = (TextView) ret.findViewById(R.id.loading_text);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
         mRefreshLayout = (SwipeRefreshLayout) ret.findViewById(R.id.filename_refresh);
-        noSearch = (TextView)ret.findViewById(R.id.no_search); 
+        noSearch = (TextView) ret.findViewById(R.id.no_search);
         Glide.with(getContext()).load(R.drawable.loading)
                 .asGif().into(mLoading);
         mFiles = new ArrayList<>();
@@ -100,27 +100,28 @@ public class FileNameFragment extends Fragment implements SwipeRefreshLayout.OnR
         new Thread(new Runnable() {
             @Override
             public void run() {
-                filename = getActivity().getIntent().getStringExtra("filename");
-                mFiles = FileUtils.searchFileInDir(Environment.getExternalStorageDirectory(),filename);
-                Log.d("aaa", "run: "+ mFiles.size());
-               
+                filetype = getActivity().getIntent().getStringExtra("filetype");
+                mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), "." + filetype);
+
+                Log.d("aaa", "run: " + mFiles.size());
+
                 Message message = new Message();
-                if (mFiles.size()==0) {
+                if (mFiles.size() == 0) {
                     message.what = 0;
-                }else 
+                } else
                     message.what = 1;
                 myHandler.sendMessage(message);
             }
         }).start();
     }
 
-    
+
     @Override
     public void onRefresh() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), filename);
+                mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), "." + filetype);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -132,7 +133,6 @@ public class FileNameFragment extends Fragment implements SwipeRefreshLayout.OnR
                 });
             }
         }).start();
-        
     }
 
     public void onResume() {

@@ -143,9 +143,12 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         // Initialize material sheet FAB
         materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay,
                 sheetColor, fabColor);
-        TextView search = (TextView)findViewById(R.id.name_search);
-        search.setOnClickListener(this);
-        MaterialRippleLayout.on(search).rippleColor(R.color.colorAccent).rippleOverlay(true).rippleAlpha((float) 0.7).create();
+        TextView name_search = (TextView)findViewById(R.id.name_search);
+        TextView type_search = (TextView)findViewById(R.id.type_search);
+        type_search.setOnClickListener(this);
+        name_search.setOnClickListener(this);
+        MaterialRippleLayout.on(name_search).rippleColor(R.color.colorAccent).rippleOverlay(true).rippleAlpha((float) 0.7).create();
+        MaterialRippleLayout.on(type_search).rippleColor(R.color.colorAccent).rippleOverlay(true).rippleAlpha((float) 0.7).create();
 
     }
 
@@ -153,9 +156,9 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         final Intent intent = new Intent();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         switch (v.getId()) {
             case R.id.name_search:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 final EditText userId = new EditText(this);
                 userId.setHint("注意请加上文件后缀名，例如:.mp4");
                 userId.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
@@ -178,9 +181,33 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                         })
                         .setView(userId, 150, 17, 70, 20)
                         .show();
-
                 materialSheetFab.hideSheet();
                 break;
+            case R.id.type_search:
+                final EditText type_id = new EditText(this);
+                type_id.setHint("例如:mp4");
+                type_id.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                builder.setTitle("请输入文件类型：")
+                        .setCancelable(false)
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String FileType = type_id.getText().toString().trim();
+                                if (FileType.equals("")) {
+                                    Toast.makeText(FileActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Intent intent = new Intent(FileActivity.this, ShowActivity.class);
+                                    intent.putExtra("class", "filetype");
+                                    intent.putExtra("filetype",FileType);
+                                    startActivity(intent);
+                                }
+                            }
+                        })
+                        .setView(type_id, 150, 17, 70, 20)
+                        .show();
+                materialSheetFab.hideSheet();
+                
             case R.id.file_image:
                 intent.setClass(this, ShowActivity.class);
                 intent.putExtra("class", "image");

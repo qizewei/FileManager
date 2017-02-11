@@ -304,7 +304,7 @@
                             />
 
                         <TextView
-                            android:id="@+id/buttonTwo"
+                            android:id="@+id/type_search"
                             android:layout_width="match_parent"
                             android:layout_height="70dp"
                             android:gravity="center"
