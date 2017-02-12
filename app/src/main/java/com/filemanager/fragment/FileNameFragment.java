@@ -79,7 +79,7 @@ public class FileNameFragment extends Fragment implements SwipeRefreshLayout.OnR
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View ret = inflater.inflate(R.layout.fragment_file_name, container, false);
-        mLoading = (ImageView) ret.findViewById(R.id.loading_gif);
+        mLoading = (ImageView) ret.findViewById(R.id.loading_gif_1);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
         mLoadingText = (TextView) ret.findViewById(R.id.loading_text);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);

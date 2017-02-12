@@ -52,6 +52,7 @@ public class MusicFragment extends Fragment {
                     mRecyclerView.setAdapter(mAdapter = new MusicAdapter(getContext(), mFiles));
                     mLoading.setVisibility(View.INVISIBLE);
                     mLoadingText.setVisibility(View.INVISIBLE);
+                    mPullToRefreshView.setVisibility(View.VISIBLE);
                     mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                     mAdapter.setOnItemClickLitener(new MusicAdapter.OnItemClickLitener() {
                         @Override

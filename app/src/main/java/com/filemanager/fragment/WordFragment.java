@@ -53,6 +53,7 @@ public class WordFragment extends Fragment{
                     mRecyclerView.setAdapter(mAdapter = new WordAdapter(getContext(), mFiles));
                     mLoading.setVisibility(View.INVISIBLE);
                     mLoadingText.setVisibility(View.INVISIBLE);
+                    mPullToRefreshView.setVisibility(View.VISIBLE);
                     mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                     mAdapter.setOnItemClickLitener(new WordAdapter.OnItemClickLitener() {
                         @Override

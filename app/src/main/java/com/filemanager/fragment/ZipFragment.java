@@ -53,6 +53,7 @@ public class ZipFragment extends Fragment {
                     mRecyclerView.setAdapter(mAdapter = new ZipAdapter(getContext(), mFiles));
                     mLoading.setVisibility(View.INVISIBLE);
                     mLoadingText.setVisibility(View.INVISIBLE);
+                    mPullToRefreshView.setVisibility(View.VISIBLE);
                     mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                     mAdapter.setOnItemClickLitener(new ZipAdapter.OnItemClickLitener() {
                         @Override

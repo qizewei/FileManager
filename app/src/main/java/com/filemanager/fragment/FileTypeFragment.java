@@ -28,6 +28,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -78,8 +80,8 @@ public class FileTypeFragment extends Fragment implements SwipeRefreshLayout.OnR
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Required empty public constructor
-        View ret = inflater.inflate(R.layout.fragment_file_name, container, false);
-        mLoading = (ImageView) ret.findViewById(R.id.loading_gif);
+        View ret = inflater.inflate(R.layout.fragment_file_type, container, false);
+        mLoading = (ImageView) ret.findViewById(R.id.loading_gif_2);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);
         mLoadingText = (TextView) ret.findViewById(R.id.loading_text);
         mRecyclerView = (RecyclerView) ret.findViewById(R.id.id_recyclerview);

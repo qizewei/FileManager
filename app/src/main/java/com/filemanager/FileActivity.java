@@ -207,7 +207,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                         .setView(type_id, 150, 17, 70, 20)
                         .show();
                 materialSheetFab.hideSheet();
-                
+                break;
             case R.id.file_image:
                 intent.setClass(this, ShowActivity.class);
                 intent.putExtra("class", "image");

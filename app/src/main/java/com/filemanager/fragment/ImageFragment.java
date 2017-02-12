@@ -53,6 +53,7 @@ public class ImageFragment extends Fragment {
                     mRecyclerView.setAdapter(mAdapter = new ImageAdapter(getContext(), mFiles));
                     mLoading.setVisibility(View.INVISIBLE);
                     mLoadingText.setVisibility(View.INVISIBLE);
+                    mPullToRefreshView.setVisibility(View.VISIBLE);
                     mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                     mAdapter.setOnItemClickLitener(new ImageAdapter.OnItemClickLitener() {
                         @Override

@@ -30,6 +30,7 @@
         android:id="@+id/pull_to_refresh"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:visibility="invisible"
         >
 
         <android.support.v7.widget.RecyclerView
