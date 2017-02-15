@@ -3,6 +3,8 @@ package com.filemanager.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +62,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final VideoAdapter.MyViewHolder holder, final int position) {
         holder.tv.setText(mDatas.get(position).getName());
+        MediaMetadataRetriever media = new MediaMetadataRetriever();
+        media.setDataSource(mDatas.get(position).getAbsolutePath());
+        Bitmap bitmap = media.getFrameAtTime();
+        holder.icon.setImageBitmap(bitmap);
 
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {
@@ -78,7 +85,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
             holder.mLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    final String items[] = {"重命名文件", "文件详情","分享"};
+                    final String items[] = {"重命名文件", "文件详情", "分享"};
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);  //先得到构造器  
                     builder.setItems(items, new DialogInterface.OnClickListener() {
                         @Override
@@ -88,12 +95,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
                                 ReName(position);
                             } else if (which == 1)
                                 ShowDetial(position);
-                            else if (which ==2) {
+                            else if (which == 2) {
                                 Intent intent = new Intent(Intent.ACTION_SEND);
                                 intent.setType("video/*");
-                                Uri uri = Uri.fromFile(mDatas.get(position)); intent.putExtra(Intent.EXTRA_STREAM, uri);
+                                Uri uri = Uri.fromFile(mDatas.get(position));
+                                intent.putExtra(Intent.EXTRA_STREAM, uri);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                mContext.startActivity(Intent.createChooser(intent,"分享到"));
+                                mContext.startActivity(Intent.createChooser(intent, "分享到"));
                             }
                         }
                     });
@@ -146,7 +154,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
                 .setCancelable(false)
                 .setNegativeButton("确定", null)
                 .setMessage("\n" + "文件名：" + name + "\n\n" + "文件大小：" + size + "\n\n" + "文件路径：" +
-                        path + "\n\n" + "时间：" + time )
+                        path + "\n\n" + "时间：" + time)
                 .show();
 
     }
@@ -211,10 +219,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv, file_video_delete;
+        ImageView icon;
         LinearLayout mLayout;
 
-         MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
+            icon = (ImageView) view.findViewById(R.id.file_video_icon);
             tv = (TextView) view.findViewById(R.id.item_video_name);
             mLayout = (LinearLayout) view.findViewById(R.id.video_linear);
             file_video_delete = (TextView) view.findViewById(R.id.file_video_delete);

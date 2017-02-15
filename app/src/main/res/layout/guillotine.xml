@@ -8,6 +8,7 @@
     android:background="@color/colorPrimary"
     tools:context="com.filemanager.FileActivity"
     android:fitsSystemWindows="true"
+    android:id="@+id/guillotine"
     >
 
     <android.support.v7.widget.Toolbar
