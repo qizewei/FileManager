@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.utils.FileUtils;
+import com.blankj.utilcode.utils.TimeUtils;
 import com.filemanager.R;
 import com.filemanager.util.ACache;
 import com.filemanager.util.FileUtil;
@@ -85,7 +86,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
                             if (which == 0) {
                                 ReName(position);
                             } else if (which == 1)
-                                Toast.makeText(mContext, "文件详情", Toast.LENGTH_SHORT).show();
+                                ShowDetial(position);
                         }
                     });
                     builder.create().show();
@@ -123,6 +124,23 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
                 }
             });
         }
+    }
+
+    private void ShowDetial(int position) {
+        File file = mDatas.get(position);
+        String size = FileUtils.getFileSize(file);
+        String name = file.getName();
+        String path = file.getAbsolutePath();
+        String time = TimeUtils.milliseconds2String(file.lastModified());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("文件属性")
+                .setCancelable(false)
+                .setNegativeButton("确定", null)
+                .setMessage("\n" + "文件名：" + name + "\n\n" + "文件大小：" + size + "\n\n" + "文件路径：" +
+                        path + "\n\n" + "时间：" + time )
+                .show();
+
     }
 
     private void ReName(final int position) {

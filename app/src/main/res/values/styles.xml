@@ -83,4 +83,5 @@
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textSize">17sp</item>
     </style>
+
 </resources>

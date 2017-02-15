@@ -3,6 +3,7 @@ package com.filemanager.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.utils.FileUtils;
+import com.blankj.utilcode.utils.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.filemanager.R;
 import com.filemanager.util.ACache;
@@ -99,12 +101,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
                             if (which == 0) {
                                 ReName(position);
                             } else if (which == 1)
-                                Toast.makeText(mContext, "文件详情", Toast.LENGTH_SHORT).show();
+                                ShowDetial(position);
+                            
                         }
                     });
                     builder.create().show();
-
-
                     return false;
                 }
             });
@@ -140,6 +141,31 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
         }
 
 
+    }
+
+    private void ShowDetial(int position) {
+        File file = mDatas.get(position);
+        String size = FileUtils.getFileSize(file);
+        String name = file.getName();
+        String path = file.getAbsolutePath();
+        String time = TimeUtils.milliseconds2String(file.lastModified());
+        
+        //获取图片宽高
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options); // 此时返回的bitmap为null
+        int width = options.outWidth;
+        int height = options.outHeight;
+        
+        
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("文件属性")
+                .setCancelable(false)
+                .setNegativeButton("确定", null)
+                .setMessage("\n" + "文件名：" + name + "\n\n" + "文件大小：" + size + "\n\n" + "文件路径：" + 
+                 path + "\n\n" + "时间：" + time + "\n\n" + "图片分辨率：" + width + "*" + height)
+                .show();
+        
     }
 
     private void ReName(final int position) {
