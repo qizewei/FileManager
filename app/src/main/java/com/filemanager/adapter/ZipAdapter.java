@@ -3,6 +3,7 @@ package com.filemanager.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -74,7 +75,7 @@ public class ZipAdapter extends RecyclerView.Adapter<ZipAdapter.MyViewHolder> {
             holder.mLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    final String items[] = {"重命名文件", "文件详情"};
+                    final String items[] = {"重命名文件", "文件详情","分享"};
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);  //先得到构造器  
                     builder.setItems(items, new DialogInterface.OnClickListener() {
                         @Override
@@ -84,6 +85,13 @@ public class ZipAdapter extends RecyclerView.Adapter<ZipAdapter.MyViewHolder> {
                                 ReName(position);
                             } else if (which == 1)
                                 ShowDetial(position);
+                            else if (which ==2) {
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.setType("application/vnd.android.package-archive");
+                                Uri uri = Uri.fromFile(mDatas.get(position)); intent.putExtra(Intent.EXTRA_STREAM, uri);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(Intent.createChooser(intent,"分享到"));
+                            }
                         }
                     });
                     builder.create().show();
