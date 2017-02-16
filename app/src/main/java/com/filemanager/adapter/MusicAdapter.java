@@ -19,8 +19,10 @@ import com.blankj.utilcode.utils.TimeUtils;
 import com.filemanager.R;
 import com.filemanager.util.ACache;
 import com.filemanager.util.FileUtil;
+import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,11 +34,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
     private Context mContext;
     private MusicAdapter.OnItemClickLitener mOnItemClickLitener;
     private ACache mCache;
+    private Gson mGson;
 
 
     public MusicAdapter(Context context, List<File> Data) {
         this.mDatas = Data;
         this.mContext = context;
+        this.mGson = new Gson();
         try {
             mCache = ACache.get(mContext);
         }catch (Exception e){
@@ -120,7 +124,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            removeData(position);
+                            removeData(holder.getAdapterPosition());
                         }
                     });
                     AlertDialog dialog = builder.create();
@@ -144,11 +148,25 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
     private void removeData(int position) {
         String path = mDatas.get(position).getAbsolutePath();
         FileUtils.deleteFile(path);
+
+        for (int i = 0; i < mDatas.size(); i++) {
+            String s = String.valueOf(i);
+            mCache.remove(s+"music");
+        }
+        
         mDatas.remove(position);
         notifyItemRemoved(position);
-
-        String s = String.valueOf(position);
-        mCache.put(s +"music", "null");
+        notifyItemRangeChanged(position,position+1);
+        //reset all catch
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i = 0; i < mDatas.size(); i++) {
+            String s = mGson.toJson(mDatas.get(i));
+            strings.add(s);
+        }
+        for (int i = 0; i < strings.size(); i++) {
+            String s = String.valueOf(i);
+            mCache.put(s+"music", strings.get(i), ACache.TIME_DAY);
+        }
     }
 
     public interface OnItemClickLitener {

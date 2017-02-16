@@ -112,7 +112,7 @@ public class FileNameAdapter  extends RecyclerView.Adapter<FileNameAdapter.MyVie
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            removeData(position);
+                            removeData(holder.getAdapterPosition());
                         }
                     });
                     AlertDialog dialog = builder.create();
@@ -186,6 +186,7 @@ public class FileNameAdapter  extends RecyclerView.Adapter<FileNameAdapter.MyVie
         FileUtils.deleteFile(path);
         mDatas.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, position + 1);
         
     }
 

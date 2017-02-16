@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -162,14 +163,14 @@ public class VideoFragment extends Fragment  {
             for (int i = 0; i < num; i++) {
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s + "video");
-                if (!string.equals("null")) {
+                if (string!=null) {
+                    Log.d("aaa", "judge: " +string);
                     File file = mGson.fromJson(string, File.class);
                     mFiles.add(file);
                 }
-
             }
         } else {
-
+    
             mFiles = FileUtils.listFilesInDirWithFilter(Environment.getExternalStorageDirectory(), ".mp4");
             addCatch();
         }

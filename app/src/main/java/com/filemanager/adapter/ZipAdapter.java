@@ -19,8 +19,10 @@ import com.blankj.utilcode.utils.TimeUtils;
 import com.filemanager.R;
 import com.filemanager.util.ACache;
 import com.filemanager.util.FileUtil;
+import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,12 +33,14 @@ public class ZipAdapter extends RecyclerView.Adapter<ZipAdapter.MyViewHolder> {
     private List<File> mDatas;
     private Context mContext;
     private ACache mCache;
+    private Gson mGson;
     private ZipAdapter.OnItemClickLitener mOnItemClickLitener;
 
 
     public ZipAdapter(Context context, List<File> Data) {
         this.mDatas = Data;
         this.mContext = context;
+        this.mGson = new Gson();
         try {
             mCache = ACache.get(mContext);
         }catch (Exception e){
@@ -116,7 +120,7 @@ public class ZipAdapter extends RecyclerView.Adapter<ZipAdapter.MyViewHolder> {
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            removeData(position);
+                            removeData(holder.getAdapterPosition());
                         }
                     });
                     AlertDialog dialog = builder.create();
@@ -139,11 +143,25 @@ public class ZipAdapter extends RecyclerView.Adapter<ZipAdapter.MyViewHolder> {
     private void removeData(int position) {
         String path = mDatas.get(position).getAbsolutePath();
         FileUtils.deleteFile(path);
+
+        for (int i = 0; i < mDatas.size(); i++) {
+            String s = String.valueOf(i);
+            mCache.remove(s+"zip");
+        }
+        
         mDatas.remove(position);
         notifyItemRemoved(position);
-
-        String s = String.valueOf(position);
-        mCache.put(s + "zip", "null");
+        notifyItemRangeChanged(position,position+1);
+        //reset all catch
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i = 0; i < mDatas.size(); i++) {
+            String s = mGson.toJson(mDatas.get(i));
+            strings.add(s);
+        }
+        for (int i = 0; i < strings.size(); i++) {
+            String s = String.valueOf(i);
+            mCache.put(s+"zip", strings.get(i), ACache.TIME_DAY);
+        }
     }
 
     public interface OnItemClickLitener {

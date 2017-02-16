@@ -23,8 +23,10 @@ import com.blankj.utilcode.utils.TimeUtils;
 import com.filemanager.R;
 import com.filemanager.util.ACache;
 import com.filemanager.util.FileUtil;
+import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,11 +38,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
     private Context mContext;
     private ACache mCache;
     private VideoAdapter.OnItemClickLitener mOnItemClickLitener;
+    private Gson mGson;
 
 
     public VideoAdapter(Context context, List<File> Data) {
         this.mDatas = Data;
         this.mContext = context;
+        this.mGson = new Gson();
         try {
             mCache = ACache.get(mContext);
         } catch (Exception e) {
@@ -60,10 +64,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(final VideoAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final VideoAdapter.MyViewHolder holder, int position) {
         holder.tv.setText(mDatas.get(position).getName());
         MediaMetadataRetriever media = new MediaMetadataRetriever();
-        media.setDataSource(mDatas.get(position).getAbsolutePath());
+        try {
+            media.setDataSource(mDatas.get(position).getAbsolutePath());
+        }catch (Exception e){
+            Log.d("aaa", "onBindViewHolder: " + "有了");
+        }
         Bitmap bitmap = media.getFrameAtTime();
         holder.icon.setImageBitmap(bitmap);
 
@@ -77,7 +85,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
 
                     String path = mDatas.get(pos).getPath();
                     Intent intent = FileUtil.openFile(path);
-                    Log.d("aaa", "onClick: " + path);
                     mContext.startActivity(intent);
                 }
             });
@@ -85,20 +92,23 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
             holder.mLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    int pos = holder.getLayoutPosition();
+                    mOnItemClickLitener.onItemClick(holder.mLayout, pos);
                     final String items[] = {"重命名文件", "文件详情", "分享"};
+                    
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);  //先得到构造器  
                     builder.setItems(items, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //dialog.dismiss();  
                             if (which == 0) {
-                                ReName(position);
+                                ReName(holder.getAdapterPosition());
                             } else if (which == 1)
-                                ShowDetial(position);
+                                ShowDetial(holder.getAdapterPosition());
                             else if (which == 2) {
                                 Intent intent = new Intent(Intent.ACTION_SEND);
                                 intent.setType("video/*");
-                                Uri uri = Uri.fromFile(mDatas.get(position));
+                                Uri uri = Uri.fromFile(mDatas.get(holder.getAdapterPosition()));
                                 intent.putExtra(Intent.EXTRA_STREAM, uri);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 mContext.startActivity(Intent.createChooser(intent, "分享到"));
@@ -114,7 +124,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
             holder.file_video_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pos = holder.getLayoutPosition();
+                    int pos = holder.getAdapterPosition();
                     mOnItemClickLitener.onItemClick(holder.tv, pos);
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("确认删除");
@@ -128,7 +138,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            removeData(position);
+                            removeData(holder.getAdapterPosition());
                         }
                     });
                     AlertDialog dialog = builder.create();
@@ -203,11 +213,26 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
     private void removeData(int position) {
         String path = mDatas.get(position).getAbsolutePath();
         FileUtils.deleteFile(path);
+
+        for (int i = 0; i < mDatas.size(); i++) {
+            String s = String.valueOf(i);
+            mCache.remove(s+"video");
+        }
+        
         mDatas.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position,position+1);
 
-        String s = String.valueOf(position);
-        mCache.put(s + "video", "null");
+        //reset all catch
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i = 0; i < mDatas.size(); i++) {
+            String s = mGson.toJson(mDatas.get(i));
+            strings.add(s);
+        }
+        for (int i = 0; i < strings.size(); i++) {
+            String s = String.valueOf(i);
+            mCache.put(s + "video", strings.get(i), ACache.TIME_DAY);
+        }
     }
 
     public interface OnItemClickLitener {

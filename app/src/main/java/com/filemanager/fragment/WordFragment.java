@@ -165,7 +165,7 @@ public class WordFragment extends Fragment{
             for (int i = 0; i < num; i++) {
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s + "word");
-                if (!string.equals("null")) {
+                if (string!=null) {
                     File file = mGson.fromJson(string, File.class);
                     mFiles.add(file);
                 }

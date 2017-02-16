@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,10 @@ import com.filemanager.R;
 import com.filemanager.util.ACache;
 import com.filemanager.util.ApkDetial;
 import com.filemanager.util.FileUtil;
+import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,15 +39,17 @@ import java.util.List;
 public class ApkAdapter extends RecyclerView.Adapter<ApkAdapter.MyViewHolder> {
     private List<File> mDatas;
     private Context mContext;
+    private Gson mGson;
     private ApkAdapter.OnItemClickLitener mOnItemClickLitener;
     private ACache mCache;
 
     public ApkAdapter(Context context, List<File> Data) {
         this.mDatas = Data;
         this.mContext = context;
+        this.mGson = new Gson();
         try {
             mCache = ACache.get(mContext);
-        }catch (Exception e){
+        } catch (Exception e) {
             //子线程未销毁可能时执行
         }
     }
@@ -62,13 +67,18 @@ public class ApkAdapter extends RecyclerView.Adapter<ApkAdapter.MyViewHolder> {
 
 
     @Override
-    public void onBindViewHolder(final ApkAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final ApkAdapter.MyViewHolder holder, int position) {
         String name = mDatas.get(position).getName();
 
         ApkDetial detial = apkInfo(mDatas.get(position).getAbsolutePath(), mContext);
-        holder.tv.setText(detial.getName());
+        if (detial.getName()!=null) {
+            holder.tv.setText(detial.getName());
+        }else 
+        holder.tv.setText(mDatas.get(position).getName());
         Drawable icon = detial.getIcon();
-        holder.icon.setImageDrawable(icon);
+        if (icon!=null) {
+            holder.icon.setImageDrawable(icon);
+        }
 
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {
@@ -87,22 +97,23 @@ public class ApkAdapter extends RecyclerView.Adapter<ApkAdapter.MyViewHolder> {
             holder.Linear.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    final String items[] = {"重命名文件", "文件详情","分享"};
+                    final String items[] = {"重命名文件", "文件详情", "分享"};
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);  //先得到构造器  
                     builder.setItems(items, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //dialog.dismiss();  
                             if (which == 0) {
-                                ReName(position);
+                                ReName(holder.getAdapterPosition());
                             } else if (which == 1)
-                             ShowDetial(position);
-                            else if (which ==2) {
+                                ShowDetial(holder.getAdapterPosition());
+                            else if (which == 2) {
                                 Intent intent = new Intent(Intent.ACTION_SEND);
                                 intent.setType("application/vnd.android.package-archive");
-                                Uri uri = Uri.fromFile(mDatas.get(position)); intent.putExtra(Intent.EXTRA_STREAM, uri);
+                                Uri uri = Uri.fromFile(mDatas.get(holder.getAdapterPosition()));
+                                intent.putExtra(Intent.EXTRA_STREAM, uri);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                mContext.startActivity(Intent.createChooser(intent,"分享到"));
+                                mContext.startActivity(Intent.createChooser(intent, "分享到"));
                             }
                         }
                     });
@@ -128,7 +139,7 @@ public class ApkAdapter extends RecyclerView.Adapter<ApkAdapter.MyViewHolder> {
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            removeData(position);
+                            removeData(holder.getAdapterPosition());
                         }
                     });
                     AlertDialog dialog = builder.create();
@@ -145,11 +156,27 @@ public class ApkAdapter extends RecyclerView.Adapter<ApkAdapter.MyViewHolder> {
     private void removeData(int position) {
         String path = mDatas.get(position).getAbsolutePath();
         FileUtils.deleteFile(path);
+
+        for (int i = 0; i < mDatas.size(); i++) {
+            String s = String.valueOf(i);
+            mCache.remove(s+"apk");
+        }
+        
         mDatas.remove(position);
         notifyItemRemoved(position);
-
-        String s = String.valueOf(position);
-        mCache.put(s + "apk", "null");
+        notifyItemRangeChanged(position, position + 1);
+        
+        //reset all catch
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i = 0; i < mDatas.size(); i++) {
+            String s = mGson.toJson(mDatas.get(i));
+            Log.d("aaa", "removeData: "+ s);
+            strings.add(s);
+        }
+        for (int i = 0; i < strings.size(); i++) {
+            String s = String.valueOf(i);
+            mCache.put(s + "apk", strings.get(i), ACache.TIME_DAY);
+        }
     }
 
     @Override
@@ -180,12 +207,6 @@ public class ApkAdapter extends RecyclerView.Adapter<ApkAdapter.MyViewHolder> {
         return detial;
     }
 
-    public interface OnItemClickLitener {
-        void onItemClick(View view, int position);
-
-        void onItemLongClick(View view, int position);
-    }
-    
     private void ShowDetial(int position) {
         File file = mDatas.get(position);
         String size = FileUtils.getFileSize(file);
@@ -198,11 +219,11 @@ public class ApkAdapter extends RecyclerView.Adapter<ApkAdapter.MyViewHolder> {
                 .setCancelable(false)
                 .setNegativeButton("确定", null)
                 .setMessage("\n" + "文件名：" + name + "\n\n" + "文件大小：" + size + "\n\n" + "文件路径：" +
-                        path + "\n\n" + "时间：" + time )
+                        path + "\n\n" + "时间：" + time)
                 .show();
 
     }
-    
+
     private void ReName(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         final EditText userId = new EditText(mContext);
@@ -239,6 +260,11 @@ public class ApkAdapter extends RecyclerView.Adapter<ApkAdapter.MyViewHolder> {
                 .show();
     }
 
+    public interface OnItemClickLitener {
+        void onItemClick(View view, int position);
+
+        void onItemLongClick(View view, int position);
+    }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv;
@@ -246,7 +272,7 @@ public class ApkAdapter extends RecyclerView.Adapter<ApkAdapter.MyViewHolder> {
         TextView item_apk_delete;
         ImageView icon;
 
-     MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
             tv = (TextView) view.findViewById(R.id.item_apk_filename);
             Linear = (LinearLayout) view.findViewById(R.id.apk_linear);

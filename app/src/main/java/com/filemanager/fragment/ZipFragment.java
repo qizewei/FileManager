@@ -163,7 +163,7 @@ public class ZipFragment extends Fragment {
             for (int i = 0; i < num; i++) {
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s + "zip");
-                if (!string.equals("null")) {
+                if (string!=null) {
                     File file = mGson.fromJson(string, File.class);
                     mFiles.add(file);
                 }

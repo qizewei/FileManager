@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,9 +116,9 @@ public class ApkFragment extends Fragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-
                                     mAdapter.notifyDataSetChanged();
                                     mPullToRefreshView.setRefreshing(false);
+                                    onCreate(null);
                                     Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
                                 }
                             });}
@@ -164,7 +165,8 @@ public class ApkFragment extends Fragment {
             for (int i = 0; i < num; i++) {
                 String s = String.valueOf(i);
                 String string = mCatch.getAsString(s + "apk");
-                if (!string.equals("null")) {
+                if (string!=null) {
+                    Log.d("aaa", "judge: ++++++++==" );
                     File file = mGson.fromJson(string, File.class);
                     mFiles.add(file);
                 }
