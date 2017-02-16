@@ -137,11 +137,11 @@ public class FileNameFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("MainScreen"); //统计页面，"MainScreen"为页面名称，可自定义
+        MobclickAgent.onPageStart("NameSearch_Fragment"); //统计页面，"MainScreen"为页面名称，可自定义
     }
 
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("MainScreen");
+        MobclickAgent.onPageEnd("NameSearch_Fragmenn");
     }
 }
