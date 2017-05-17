@@ -160,7 +160,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.name_search:
                 final EditText userId = new EditText(this);
-                userId.setHint("注意请加上文件后缀名，例如:.mp4");
+                userId.setHint("请输入关键字");
                 userId.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
                 builder.setTitle("请输入文件名：")
                         .setCancelable(false)

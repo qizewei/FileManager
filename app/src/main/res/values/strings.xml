@@ -3,7 +3,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="tell_user">\t\t\t\t\t感谢您对本软件的使用和支持，如果您对本软件有任何好的建议，欢迎您
+    <string name="tell_user">\n关于一些操作使用：
+        \n1.在进入文件展示页面后，可以通过左划文件，长按文件可操作文件；
+        \n2.在分类页面可通过下拉刷新内存信息，在文件展示页面，可下拉刷新文件列表；
+        \n3.本软件的默认文件类型：图片(jpg)，视频(mp4)，音乐(mp3)，压缩包(zip)，安装包(apk)，文档(txt)。
+        如果您想查看其他类型的文件，可通过主分类页面右下角的搜索入口进行搜索；
+        \n\t\t\t\t\t感谢您对本软件的使用和支持，如果您对本软件有任何建议和问题，欢迎您
         通过本页面下方的邮箱联系作者本人，我会尽快回应您的反馈并表示感谢。再次感谢您的使用，祝您生活愉快，
         鸡年大吉吧。</string>
 </resources>

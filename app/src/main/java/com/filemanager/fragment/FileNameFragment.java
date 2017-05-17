@@ -22,6 +22,7 @@ import com.blankj.utilcode.utils.FileUtils;
 import com.bumptech.glide.Glide;
 import com.filemanager.R;
 import com.filemanager.adapter.FileNameAdapter;
+import com.filemanager.util.FileUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -101,7 +102,7 @@ public class FileNameFragment extends Fragment implements SwipeRefreshLayout.OnR
             @Override
             public void run() {
                 filename = getActivity().getIntent().getStringExtra("filename");
-                mFiles = FileUtils.searchFileInDir(Environment.getExternalStorageDirectory(),filename);
+                mFiles = FileUtil.searchFileInDir(Environment.getExternalStorageDirectory(),filename);
                 Log.d("aaa", "run: "+ mFiles.size());
                
                 Message message = new Message();
