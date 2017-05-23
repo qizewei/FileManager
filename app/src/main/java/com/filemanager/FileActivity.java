@@ -61,9 +61,10 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.file_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.activity_file);
         mTable = getSharedPreferences("table", MODE_PRIVATE);
-
+        //断头台菜单设置
         ImageView menus = (ImageView) findViewById(R.id.content_hamburger);
         View guillotineMenu = LayoutInflater.from(this).inflate(R.layout.guillotine, null);
         drawerLayout.addView(guillotineMenu);
