@@ -5,7 +5,7 @@
               android:background="@color/backGround"
               android:fitsSystemWindows="true"
               android:orientation="vertical"
-              tools:context="com.filemanager.fragment.MusicFragment">
+              tools:context="com.fileManager.fragment.MusicFragment">
 
     <include layout="@layout/show_toolbar"/>
 

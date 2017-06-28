@@ -6,7 +6,7 @@
     android:background="@color/backGround"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.filemanager.fragment.ImageFragment"
+    tools:context="com.fileManager.fragment.ImageFragment"
     >
 
 

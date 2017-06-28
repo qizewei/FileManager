@@ -6,7 +6,7 @@
     android:id="@+id/activity_file"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.filemanager.FileActivity"
+    tools:context="com.fileManager.FileActivity"
     >
 
     <android.support.design.widget.CoordinatorLayout
@@ -260,7 +260,7 @@
                 </LinearLayout>
             </android.support.v4.widget.SwipeRefreshLayout>
 
-            <com.filemanager.util.Fab
+            <com.fileManager.util.Fab
                 android:id="@+id/fab"
                 android:layout_width="70dp"
                 android:layout_height="70dp"

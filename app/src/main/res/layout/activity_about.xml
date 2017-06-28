@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backGround"
-    tools:context="com.filemanager.AboutActivity">
+    tools:context="com.fileManager.AboutActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

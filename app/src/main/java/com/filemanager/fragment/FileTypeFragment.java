@@ -1,4 +1,4 @@
-package com.filemanager.fragment;
+package com.fileManager.fragment;
 
 
 import android.os.Bundle;
@@ -20,8 +20,8 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.utils.FileUtils;
 import com.bumptech.glide.Glide;
-import com.filemanager.R;
-import com.filemanager.adapter.FileNameAdapter;
+import com.fileManager.R;
+import com.fileManager.adapter.FileNameAdapter;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package com.filemanager.util;
+package com.fileManager.util;
 
 
 import android.graphics.drawable.Drawable;

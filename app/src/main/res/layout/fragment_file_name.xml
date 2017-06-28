@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/backGround"
     android:orientation="vertical"
-    tools:context="com.filemanager.fragment.FileNameFragment">
+    tools:context="com.fileManager.fragment.FileNameFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

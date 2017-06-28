@@ -1,4 +1,4 @@
-package com.filemanager.fragment;
+package com.fileManager.fragment;
 
 
 import android.content.Context;
@@ -20,9 +20,9 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.utils.FileUtils;
 import com.bumptech.glide.Glide;
-import com.filemanager.R;
-import com.filemanager.adapter.WordAdapter;
-import com.filemanager.util.ACache;
+import com.fileManager.R;
+import com.fileManager.adapter.WordAdapter;
+import com.fileManager.util.ACache;
 import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
 import com.yalantis.taurus.PullToRefreshView;

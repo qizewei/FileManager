@@ -1,18 +1,18 @@
-package com.filemanager;
+package com.fileManager;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.filemanager.fragment.ApkFragment;
-import com.filemanager.fragment.FileNameFragment;
-import com.filemanager.fragment.FileTypeFragment;
-import com.filemanager.fragment.ImageFragment;
-import com.filemanager.fragment.MusicFragment;
-import com.filemanager.fragment.VideoFragment;
-import com.filemanager.fragment.WordFragment;
-import com.filemanager.fragment.ZipFragment;
+import com.fileManager.fragment.ApkFragment;
+import com.fileManager.fragment.FileNameFragment;
+import com.fileManager.fragment.FileTypeFragment;
+import com.fileManager.fragment.ImageFragment;
+import com.fileManager.fragment.MusicFragment;
+import com.fileManager.fragment.VideoFragment;
+import com.fileManager.fragment.WordFragment;
+import com.fileManager.fragment.ZipFragment;
 import com.umeng.analytics.MobclickAgent;
 
 public class ShowActivity extends AppCompatActivity {

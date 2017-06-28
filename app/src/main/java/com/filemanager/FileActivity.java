@@ -1,4 +1,4 @@
-package com.filemanager;
+package com.fileManager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,8 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.filemanager.util.ACache;
-import com.filemanager.util.Fab;
+import com.fileManager.util.ACache;
+import com.fileManager.util.Fab;
 import com.gordonwong.materialsheetfab.MaterialSheetFab;
 import com.umeng.analytics.MobclickAgent;
 import com.yalantis.guillotine.animation.GuillotineAnimation;
@@ -75,16 +75,15 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 .setGuillotineListener(new GuillotineListener() {
                     @Override
                     public void onGuillotineOpened() {
-                        mTable.edit().putBoolean("menuOpen", true).commit();
+                        mTable.edit().putBoolean("menuOpen", true).apply();
                     }
 
                     @Override
                     public void onGuillotineClosed() {
-                        mTable.edit().putBoolean("menuOpen", false).commit();
+                        mTable.edit().putBoolean("menuOpen", false).apply();
                     }
                 })
                 .build();
-
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.file_refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);

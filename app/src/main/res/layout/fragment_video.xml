@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/backGround"
     android:orientation="vertical"
-    tools:context="com.filemanager.fragment.VideoFragment">
+    tools:context="com.fileManager.fragment.VideoFragment">
 
     <include layout="@layout/show_toolbar"/>
 

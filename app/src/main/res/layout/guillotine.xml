@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorPrimary"
-    tools:context="com.filemanager.FileActivity"
+    tools:context="com.fileManager.FileActivity"
     android:fitsSystemWindows="true"
     android:id="@+id/guillotine"
     >

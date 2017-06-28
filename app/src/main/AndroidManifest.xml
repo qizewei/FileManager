@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-           package="com.filemanager">
+           package="com.fileManager">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -13,13 +13,13 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-        android:name=".MyApplication"
+        android:name="com.fileManager.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.fileManager.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -27,12 +27,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ShowActivity"
+            android:name="com.fileManager.ShowActivity"
             android:launchMode="singleTask">
         </activity>
-        <activity android:name=".FileActivity"/>
-        <activity android:name=".MemoryActivity"/>
-        <activity android:name=".AboutActivity"/>
+        <activity android:name="com.fileManager.FileActivity"/>
+        <activity android:name="com.fileManager.MemoryActivity"/>
+        <activity android:name="com.fileManager.AboutActivity"/>
 
         <meta-data android:value="5891b3acf43e480bb4001203" android:name="UMENG_APPKEY"/>
         <meta-data android:value="MoRen" android:name="UMENG_CHANNEL"/>

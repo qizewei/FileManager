@@ -1,4 +1,4 @@
-package com.filemanager.util;
+package com.fileManager.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author Michael Yang（www.yangfuhai.com） update at 2013.08.07
  */
 public class ACache {
-    public static final int TIME_HOUR = 60 * 60;
+    private static final int TIME_HOUR = 60 * 60;
     public static final int TIME_DAY = TIME_HOUR * 24;
     private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb
     private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量

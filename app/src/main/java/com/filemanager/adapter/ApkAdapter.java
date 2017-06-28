@@ -1,4 +1,4 @@
-package com.filemanager.adapter;
+package com.fileManager.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,10 +22,10 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.utils.FileUtils;
 import com.blankj.utilcode.utils.TimeUtils;
-import com.filemanager.R;
-import com.filemanager.util.ACache;
-import com.filemanager.util.ApkDetial;
-import com.filemanager.util.FileUtil;
+import com.fileManager.R;
+import com.fileManager.util.ACache;
+import com.fileManager.util.ApkDetial;
+import com.fileManager.util.FileUtil;
 import com.google.gson.Gson;
 
 import java.io.File;

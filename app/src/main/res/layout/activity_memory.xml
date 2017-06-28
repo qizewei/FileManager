@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/backGround"
     android:fitsSystemWindows="true"
-    tools:context="com.filemanager.MemoryActivity">
+    tools:context="com.fileManager.MemoryActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

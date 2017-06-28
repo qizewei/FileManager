@@ -1,4 +1,4 @@
-package com.filemanager;
+package com.fileManager;
 
 import android.app.Application;
 
