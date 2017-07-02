@@ -36,38 +36,44 @@ import com.yalantis.guillotine.interfaces.GuillotineListener;
 
 import java.text.DecimalFormat;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class FileActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
+
+    @BindView(R.id.free_number)
+    TextView mFreeView;
+    @BindView(R.id.total_number)
+    TextView mTotalView;
+    @BindView(R.id.file_refresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     public static boolean isNight;
-    private TextView mFreeView;
-    private TextView mTotalView;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
     private long exitTime = 0;
     private GuillotineAnimation mAnimation;
     private SharedPreferences mTable;
     private String mFreeS;
     private String mToalS;
-
     private MaterialSheetFab materialSheetFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file);
+        ButterKnife.bind(this);
         initView();
     }
 
     private void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.file_toolbar);
-        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.activity_file);
         mTable = getSharedPreferences("table", MODE_PRIVATE);
         //断头台菜单设置
         ImageView menus = (ImageView) findViewById(R.id.content_hamburger);
         View guillotineMenu = LayoutInflater.from(this).inflate(R.layout.guillotine, null);
-        drawerLayout.addView(guillotineMenu);
+        ((DrawerLayout) findViewById(R.id.activity_file)).addView(guillotineMenu);
         mAnimation = new GuillotineAnimation.GuillotineBuilder(guillotineMenu, guillotineMenu.findViewById(R.id.guillotine_hamburger), menus)
                 .setStartDelay(250)
                 .setActionBarViewForAnimation(toolbar)
@@ -85,7 +91,6 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 })
                 .build();
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.file_refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         findViewById(R.id.file_bottom).setOnClickListener(this);
@@ -103,6 +108,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         image.setOnClickListener(this);
         word.setOnClickListener(this);
 
+        //MaterialDesign水波纹效果
         MaterialRippleLayout.on(image).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
         MaterialRippleLayout.on(apk).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
         MaterialRippleLayout.on(zip).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
@@ -115,24 +121,22 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayout about = (LinearLayout) findViewById(R.id.menu_about);
         LinearLayout quit = (LinearLayout) findViewById(R.id.menu_quit);
         RelativeLayout title = (RelativeLayout) findViewById(R.id.menu_title);
+
         check.setOnClickListener(this);
         clear.setOnClickListener(this);
         about.setOnClickListener(this);
         quit.setOnClickListener(this);
         title.setOnClickListener(this);
+
         MaterialRippleLayout.on(check).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
         MaterialRippleLayout.on(clear).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
         MaterialRippleLayout.on(about).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
         MaterialRippleLayout.on(quit).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
         MaterialRippleLayout.on(title).rippleColor(Color.BLACK).rippleOverlay(true).rippleAlpha((float) 0.7).create();
 
-
         //底边栏存储空间显示
-        mFreeView = (TextView) findViewById(R.id.free_number);
-        mTotalView = (TextView) findViewById(R.id.total_number);
         getFreeSpace();
         getTotalSpace();
-
 
         Fab fab = (Fab) findViewById(R.id.fab);
         View sheetView = findViewById(R.id.fab_sheet);
@@ -140,7 +144,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         int sheetColor = getResources().getColor(R.color.textColor2);
         int fabColor = getResources().getColor(R.color.colorAccent);
 
-        // Initialize material sheet FAB
+        // 初始化 material sheet FAB，搜索按钮
         materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay,
                 sheetColor, fabColor);
         TextView name_search = (TextView)findViewById(R.id.name_search);
@@ -149,9 +153,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         name_search.setOnClickListener(this);
         MaterialRippleLayout.on(name_search).rippleColor(R.color.colorAccent).rippleOverlay(true).rippleAlpha((float) 0.7).create();
         MaterialRippleLayout.on(type_search).rippleColor(R.color.colorAccent).rippleOverlay(true).rippleAlpha((float) 0.7).create();
-
     }
-
 
     @Override
     public void onClick(View v) {
@@ -356,17 +358,11 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
         return super.onKeyDown(keyCode, event);
     }
 
-
     @Override
     public void onRefresh() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-           package="com.fileManager">
+    package="com.fileManager">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!--Bmob-->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!--友盟-->
-    <uses-sdk android:minSdkVersion="4"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-sdk android:minSdkVersion="4" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
@@ -21,21 +22,26 @@
         android:theme="@style/AppTheme">
         <activity android:name="com.fileManager.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.fileManager.ShowActivity"
-            android:launchMode="singleTask">
-        </activity>
-        <activity android:name="com.fileManager.FileActivity"/>
-        <activity android:name="com.fileManager.MemoryActivity"/>
-        <activity android:name="com.fileManager.AboutActivity"/>
+            android:launchMode="singleTask"/>
+        <activity
+            android:name="com.fileManager.FileActivity"
+            android:label="" />
+        <activity android:name="com.fileManager.MemoryActivity" />
+        <activity android:name="com.fileManager.AboutActivity" />
 
-        <meta-data android:value="5891b3acf43e480bb4001203" android:name="UMENG_APPKEY"/>
-        <meta-data android:value="MoRen" android:name="UMENG_CHANNEL"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5891b3acf43e480bb4001203" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="MoRen" />
     </application>
 
 </manifest>
