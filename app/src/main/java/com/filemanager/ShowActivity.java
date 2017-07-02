@@ -1,7 +1,6 @@
 package com.fileManager;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
@@ -23,9 +22,7 @@ public class ShowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show);
 
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         String aClass = getIntent().getStringExtra("class");
         switch (aClass) {
             case "image":
@@ -52,7 +49,6 @@ public class ShowActivity extends AppCompatActivity {
             case "filetype":
                 transaction.add(R.id.show_detial,new FileTypeFragment());
                 break;
-
         }
         transaction.commit();
     }

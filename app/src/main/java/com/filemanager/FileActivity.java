@@ -255,7 +255,7 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 edit.putBoolean("firstWord", true);
                 edit.putBoolean("firstApk", true);
                 edit.putBoolean("firstZip", true);
-                edit.commit();
+                edit.apply();
                 Toast.makeText(this, "清理缓存成功", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_check:
@@ -287,10 +287,10 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
                 isNight = mTable.getBoolean("night", false);
                 if (isNight) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    mTable.edit().putBoolean("night", false).commit();
+                    mTable.edit().putBoolean("night", false).apply();
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    mTable.edit().putBoolean("night", true).commit();
+                    mTable.edit().putBoolean("night", true).apply();
                 }
                 recreate();
                 break;
@@ -328,7 +328,6 @@ public class FileActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 双击返回键退出
-     *
      * @param keyCode
      * @param event
      * @return

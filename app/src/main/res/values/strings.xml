@@ -11,4 +11,17 @@
         \n\t\t\t\t\t感谢您对本软件的使用和支持，如果您对本软件有任何建议和问题，欢迎您
         通过本页面下方的邮箱联系作者本人，我会尽快回应您的反馈并表示感谢。再次感谢您的使用，祝您生活愉快，
         鸡年大吉吧。</string>
+    <string name="title">快客</string>
+    <string name="all">总共：</string>
+    <string name="reading">正在读取</string>
+    <string name="gb">GB</string>
+    <string name="last">剩余：</string>
+    <string name="image">图片</string>
+    <string name="video">视频</string>
+    <string name="music">音乐</string>
+    <string name="doc">文档</string>
+    <string name="apk">安装包</string>
+    <string name="zip">压缩包</string>
+    <string name="fileNameSearch">文件名搜索</string>
+    <string name="fileSearch">类型文件搜索</string>
 </resources>

@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_file"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fileManager.FileActivity">
+    tools:context="com.fileManager.FileActivity"
+    >
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        >
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -28,7 +31,8 @@
                     android:id="@+id/content_hamburger"
                     style="@style/ImageView.Hamburger"
                     android:layout_gravity="left"
-                    android:src="@drawable/ic_menu" />
+                    android:src="@drawable/ic_menu"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -37,7 +41,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/title"
                     android:textColor="@color/textColor2"
-                    android:textSize="21sp" />
+                    android:textSize="21sp"/>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
@@ -46,12 +50,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="47dp"
-            android:background="@color/backGround">
+            android:background="@color/backGround"
+            >
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:background="@color/colorPrimary" />
+                android:background="@color/colorPrimary"/>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -59,7 +64,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="4dp"
                 android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp">
+                android:layout_marginRight="4dp"
+                >
 
                 <LinearLayout
                     android:id="@+id/file_bottom"
@@ -74,40 +80,43 @@
 
                     <TextView
                         style="@style/file_bottom_text"
-                        android:text="@string/all"
-                        android:textColor="@color/textColor" />
+                        android:text="总共："
+                        android:textColor="@color/textColor"
+                        />
 
                     <TextView
                         android:id="@+id/total_number"
                         style="@style/file_bottom_text"
-                        android:text="@string/reading"
+                        android:text="正在读取"
                         android:textColor="@color/textColor"
-                        android:textSize="19sp" />
+                        android:textSize="19sp"
+                        />
 
                     <TextView
                         style="@style/file_bottom_text"
                         android:paddingLeft="4dp"
-                        android:text="@string/gb"
-                        android:textColor="@color/textColor" />
+                        android:text="GB"
+                        android:textColor="@color/textColor"/>
 
                     <TextView
                         style="@style/file_bottom_text"
                         android:paddingLeft="21dp"
-                        android:text="@string/last"
-                        android:textColor="@color/textColor" />
+                        android:text="剩余："
+                        android:textColor="@color/textColor"/>
 
                     <TextView
                         android:id="@+id/free_number"
                         style="@style/file_bottom_text"
                         android:text="正在读取"
                         android:textColor="@color/textColor"
-                        android:textSize="19sp" />
+                        android:textSize="19sp"
+                        />
 
                     <TextView
                         style="@style/file_bottom_text"
                         android:paddingLeft="4dp"
-                        android:text="@string/gb"
-                        android:textColor="@color/textColor" />
+                        android:text="GB"
+                        android:textColor="@color/textColor"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -128,24 +137,27 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <android.support.v7.widget.CardView style="@style/file_cardView">
+                        <android.support.v7.widget.CardView
+                            style="@style/file_cardView">
 
                             <LinearLayout
                                 android:id="@+id/file_image"
-                                style="@style/file_gride">
+                                style="@style/file_gride"
+                                >
 
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:src="@mipmap/file_image" />
+                                    android:src="@mipmap/file_image"/>
 
                                 <TextView
                                     style="@style/file_gride_text"
-                                    android:text="@string/image" />
+                                    android:text="图片"/>
                             </LinearLayout>
                         </android.support.v7.widget.CardView>
 
-                        <android.support.v7.widget.CardView style="@style/file_cardView">
+                        <android.support.v7.widget.CardView
+                            style="@style/file_cardView">
 
                             <LinearLayout
                                 android:id="@+id/file_video"
@@ -154,15 +166,16 @@
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:src="@mipmap/file_video" />
+                                    android:src="@mipmap/file_video"/>
 
                                 <TextView
                                     style="@style/file_gride_text"
-                                    android:text="@string/video" />
+                                    android:text="视频"/>
                             </LinearLayout>
                         </android.support.v7.widget.CardView>
 
-                        <android.support.v7.widget.CardView style="@style/file_cardView">
+                        <android.support.v7.widget.CardView
+                            style="@style/file_cardView">
 
                             <LinearLayout
                                 android:id="@+id/file_music"
@@ -171,11 +184,11 @@
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:src="@mipmap/file_music" />
+                                    android:src="@mipmap/file_music"/>
 
                                 <TextView
                                     style="@style/file_gride_text"
-                                    android:text="@string/music" />
+                                    android:text="音乐"/>
                             </LinearLayout>
                         </android.support.v7.widget.CardView>
 
@@ -185,9 +198,11 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
-                        <android.support.v7.widget.CardView style="@style/file_cardView">
+                        <android.support.v7.widget.CardView
+                            style="@style/file_cardView">
 
                             <LinearLayout
                                 android:id="@+id/file_word"
@@ -196,15 +211,16 @@
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:src="@mipmap/file_word" />
+                                    android:src="@mipmap/file_word"/>
 
                                 <TextView
                                     style="@style/file_gride_text"
-                                    android:text="@string/doc" />
+                                    android:text="文档"/>
                             </LinearLayout>
                         </android.support.v7.widget.CardView>
 
-                        <android.support.v7.widget.CardView style="@style/file_cardView">
+                        <android.support.v7.widget.CardView
+                            style="@style/file_cardView">
 
                             <LinearLayout
                                 android:id="@+id/file_apk"
@@ -213,15 +229,16 @@
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:src="@mipmap/file_apk" />
+                                    android:src="@mipmap/file_apk"/>
 
                                 <TextView
                                     style="@style/file_gride_text"
-                                    android:text="@string/apk" />
+                                    android:text="安装包"/>
                             </LinearLayout>
                         </android.support.v7.widget.CardView>
 
-                        <android.support.v7.widget.CardView style="@style/file_cardView">
+                        <android.support.v7.widget.CardView
+                            style="@style/file_cardView">
 
                             <LinearLayout
                                 android:id="@+id/file_zip"
@@ -230,11 +247,11 @@
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:src="@mipmap/file_zip" />
+                                    android:src="@mipmap/file_zip"/>
 
                                 <TextView
                                     style="@style/file_gride_text"
-                                    android:text="@string/zip" />
+                                    android:text="压缩包"/>
                             </LinearLayout>
                         </android.support.v7.widget.CardView>
 
@@ -251,12 +268,12 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="60dp"
                 android:layout_marginRight="17dp"
-                android:src="@drawable/ic_search_white_24dp" />
+                android:src="@drawable/ic_search_white_24dp"/>
 
             <com.gordonwong.materialsheetfab.DimOverlayFrameLayout
                 android:id="@+id/overlay"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
 
             <!-- Circular reveal container for the sheet -->
             <io.codetail.widget.RevealLinearLayout
@@ -282,16 +299,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="70dp"
                             android:gravity="center"
-                            android:text="@string/fileNameSearch"
-                            android:textSize="17sp" />
+                            android:text="文件名搜索"
+                            android:textSize="17sp"
+                            />
 
                         <TextView
                             android:id="@+id/type_search"
                             android:layout_width="match_parent"
                             android:layout_height="70dp"
                             android:gravity="center"
-                            android:text="@string/fileSearch"
-                            android:textSize="17sp" />
+                            android:text="类型文件搜索"
+                            android:textSize="17sp"
+                            />
 
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
