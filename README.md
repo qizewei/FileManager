@@ -1,7 +1,9 @@
 # 快客文件管理器
 
-![version：1.0.0](https://img.shields.io/badge/version%20-1.0.0-brightgreen.svg)&mbsp;
-![API：15+](https://img.shields.io/badge/API-15%2B-brightgreen.svg)&mbsp;
+![version：1.0.0](https://img.shields.io/badge/version%20-1.0.0-brightgreen.svg)
+&emsp;
+![API：15+](https://img.shields.io/badge/API-15%2B-brightgreen.svg)
+&emsp;
 ![QQ：779754469](https://img.shields.io/badge/QQ-779754469-red.svg) 
 &mbsp;
 完整的基于Android的文件管理器的APP，百度手机助手已上线。
@@ -49,6 +51,5 @@
 
 希望你能加入我，一起完成这个项目,哪怕只是简单的测试。<br/>
 我的邮箱：qizewei@vip.qq.com
-
 
 
