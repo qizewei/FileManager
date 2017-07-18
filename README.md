@@ -2,7 +2,7 @@
 
 ![version：1.0.0](https://img.shields.io/badge/version%20-1.0.0-brightgreen.svg)
 ![API：15+](https://img.shields.io/badge/API-15%2B-brightgreen.svg)
-![QQ：779754469](https://img.shields.io/badge/QQ-779754469-red.svg）
+![QQ：779754469](https://img.shields.io/badge/QQ-779754469-red.svg)
 
 完整的基于Android的文件管理器的APP，百度手机助手已上线。
 
