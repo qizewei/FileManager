@@ -26,11 +26,10 @@
 
 不同的文件类型采用不同的列表布局方式，图片列表采用瀑布流布局，视频类文件采用列表布局。为了界面的优雅，文件的操作也比较隐蔽：一般的文件操作放在了长按显示的菜单中，删除的操作则添加在了侧滑菜单中。文件的不同类型的文件列表均作了相应的处理，比如：视频列表页面显示视频的截图，APK列表页面显示安装包的ICON和应用名等。
 
-<center class="half">
-<img src="http://oqg7nynni.bkt.clouddn.com/list2.png" alt="列表展示" width="250"／>
-&emsp;&emsp;&emsp;&emsp;
-<img src="http://oqg7nynni.bkt.clouddn.com/list.png" alt="列表展示" width="250"／>
-</center>
+<table><tr>
+<td><img src="http://oqg7nynni.bkt.clouddn.com/list2.png" alt="列表展示" width="250"／></td>
+<td><img src="http://oqg7nynni.bkt.clouddn.com/list.png" alt="列表展示" width="250"／></td>
+</tr></table>
 
 ## 其他功能
 
