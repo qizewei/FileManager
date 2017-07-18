@@ -12,13 +12,17 @@
 - Mini体积的安装包。
 - 我编不下去了......，往下看图吧。
 
-### 主页／夜间模式的设置
+## 主页／夜间模式的设置
 
 基于Android的Material Design的设计规范设计的主页面，用来显示文件分类。该应用中几乎所有的交互都有合理的动画过渡效果，希望借此提高用户的体验，最低版本兼容到API 15。
 
+<figure class="half">
 <img src="http://oqg7nynni.bkt.clouddn.com/main.png" alt="主页" width="250">
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 <img src="http://oqg7nynni.bkt.clouddn.com/main_night.png" alt="夜间模式" width="250">
+</figure>
+
+## 文件列表的展示和操作
 
 
 
