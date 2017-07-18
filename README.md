@@ -1,9 +1,9 @@
 # 快客文件管理器
 
-![version：1.0.0](https://img.shields.io/badge/version%20-1.0.0-brightgreen.svg)
-![API：15+](https://img.shields.io/badge/API-15%2B-brightgreen.svg)
+![version：1.0.0](https://img.shields.io/badge/version%20-1.0.0-brightgreen.svg)&mbsp;
+![API：15+](https://img.shields.io/badge/API-15%2B-brightgreen.svg)&mbsp;
 ![QQ：779754469](https://img.shields.io/badge/QQ-779754469-red.svg) 
-
+&mbsp;
 完整的基于Android的文件管理器的APP，百度手机助手已上线。
 
 - 完整的文件管理功能，包括文件分享，文件展示，文件操作等等。
@@ -27,7 +27,7 @@
 不同的文件类型采用不同的列表布局方式，图片列表采用瀑布流布局，视频类文件采用列表布局。为了界面的优雅，文件的操作也比较隐蔽：一般的文件操作放在了长按显示的菜单中，删除的操作则添加在了侧滑菜单中。文件的不同类型的文件列表均作了相应的处理，比如：视频列表页面显示视频的截图，APK列表页面显示安装包的ICON和应用名等。
 
 <table><tr>
-<td><img src="http://oqg7nynni.bkt.clouddn.com/list2.png" alt="列表展示" width="250"／></td>
+<td><img src="http://oqg7nynni.bkt.clouddn.com/list2.png" alt="列表" width="250"／></td>
 <td><img src="http://oqg7nynni.bkt.clouddn.com/list.png" alt="列表展示" width="250"／></td>
 </tr></table>
 
@@ -49,7 +49,6 @@
 
 希望你能加入我，一起完成这个项目,哪怕只是简单的测试。<br/>
 我的邮箱：qizewei@vip.qq.com
-
 
 
 
