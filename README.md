@@ -17,11 +17,10 @@
 
 基于Android的Material Design的设计规范设计的主页面，用来显示文件分类。该应用中几乎所有的交互都有合理的动画过渡效果，希望借此提高用户的体验，最低版本兼容到API 15。
 
-<center class="half">
-<img src="http://oqg7nynni.bkt.clouddn.com/main.png" alt="主页" width="250"／>
-&emsp;&emsp;&emsp;&emsp;
-<img src="http://oqg7nynni.bkt.clouddn.com/main_night.png" alt="夜间模式" width="250"／>
-</center>
+<table><tr>
+<td><img src="http://oqg7nynni.bkt.clouddn.com/main.png" alt="主页" width="250"／></td>
+<td><img src="http://oqg7nynni.bkt.clouddn.com/main_night.png" alt="夜间模式" width="250"／></td>
+</tr></table>
 
 ## 文件列表的展示和操作
 
