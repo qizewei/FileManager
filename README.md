@@ -20,8 +20,8 @@
 基于Android的Material Design的设计规范设计的主页面，用来显示文件分类。该应用中几乎所有的交互都有合理的动画过渡效果，希望借此提高用户的体验，最低版本兼容到API 15。
 
 <table><tr>
-<td><img src="http://oqg7nynni.bkt.clouddn.com/main.png" alt="主页" width="250"／></td>
-<td><img src="http://oqg7nynni.bkt.clouddn.com/main_night.png" alt="夜间模式" width="250"／></td>
+<td><img src="http://m.qpic.cn/psb?/V10LoQYc2TASjK/*3uSt*VohJTrgLc5xLdbJG46eorZQ7DoYSoa1fLMuR8!/b/dDEBAAAAAAAA&bo=oAUACqAFAAoDCSw!&rf=viewer_4" alt="主页" width="250"／></td>
+<td><img src="http://m.qpic.cn/psb?/V10LoQYc2TASjK/teDzUlwxUQDQx2i*y00QiWDS1zWN7MDfN4MzQyShepU!/b/dDYBAAAAAAAA&bo=OASABzgEgAcDCSw!&rf=viewer_4" alt="夜间模式" width="250"／></td>
 </tr></table>
 
 ## 文件列表的展示和操作
@@ -29,8 +29,8 @@
 不同的文件类型采用不同的列表布局方式，图片列表采用瀑布流布局，视频类文件采用列表布局。为了界面的优雅，文件的操作也比较隐蔽：一般的文件操作放在了长按显示的菜单中，删除的操作则添加在了侧滑菜单中。文件的不同类型的文件列表均作了相应的处理，比如：视频列表页面显示视频的截图，APK列表页面显示安装包的ICON和应用名等。
 
 <table><tr>
-<td><img src="http://oqg7nynni.bkt.clouddn.com/list7.png" alt="列表展示" width="250"／></td>
-<td><img src="http://oqg7nynni.bkt.clouddn.com/list.png" alt="列表展示" width="250"／></td>
+<td><img src="http://m.qpic.cn/psb?/V10LoQYc2TASjK/IKRHeGoeb6NhNDwKxhzS*dq1rmFGNA.zI6d.oKCVnCU!/b/dDUBAAAAAAAA&bo=kAHHApABxwIDCSw!&rf=viewer_4" alt="列表展示" width="250"／></td>
+<td><img src="http://m.qpic.cn/psb?/V10LoQYc2TASjK/fEeL9l3se7KT9rO3uHM7RwXHp93NBvHZyZOpvxZBhAY!/b/dFIBAAAAAAAA&bo=oAUACqAFAAoDCSw!&rf=viewer_4" alt="列表展示" width="250"／></td>
 </tr></table>
 
 ## 其他功能
