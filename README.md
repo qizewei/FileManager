@@ -49,8 +49,9 @@
 
 ## Last
 
-希望你能加入我，一起完成这个项目,哪怕只是简单的测试。<br/>
-我的邮箱：qizewei@vip.qq.com
+联系方式：<br/>
+邮箱：qizewei@vip.qq.com<br/>
+WeChat：779754469<br/>
 
 
 
