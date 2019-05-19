@@ -8,6 +8,8 @@
 
 完整的基于Android的文件管理器的APP，百度手机助手已上线。
 
+[下载地址](https://shouji.baidu.com/software/10939153.html)
+
 - 完整的文件管理功能，包括文件分享，文件展示，文件操作等等。
 - Material Design 设计风格，同时兼容较低的Android版本。
 - 流畅优雅的动画和交互反馈。
